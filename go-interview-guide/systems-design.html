@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Systems Design - Interview Guide</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-content">
+      <a href="index.html" class="site-title">Go Interview Guide</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="go-fundamentals.html">Go Fundamentals</a></li>
+          <li><a href="concurrency.html">Concurrency</a></li>
+          <li><a href="algorithms.html">Algorithms</a></li>
+          <li><a href="systems-design.html">Systems Design</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <h1>Systems Design</h1>
+      <p>Distributed systems, API design, resilience, and observability. The questions here are broad and open-ended — the goal is to show how you think about trade-offs, not to arrive at a single correct answer.</p>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">1. Design a URL shortener service.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Design a service like bit.ly that takes a long URL and returns a short URL. It must redirect short URLs to the original. Consider: database schema, hashing strategy, collision handling, rate limiting, analytics, and cache strategy.</p>
+
+        <div class="workspace-status" id="ws-q1"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q1-hint">Hint</button>
+          <button class="toggle-btn" data-target="q1-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q1-context">Context</button>
+        </div>
+
+        <div id="q1-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Start with the data model. A simple table: <code>(short_key, long_url, created_at, clicks)</code>. For the hash, consider base62 encoding of a distributed ID (e.g., Snowflake). For collisions, either check-and-retry or use a deterministic hash with a counter.</p>
+        </div>
+        <div id="q1-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you handle custom short URLs (e.g., <code>bit.ly/my-brand</code>)?</li>
+            <li>What if the same long URL is submitted twice? Should you return the same short URL?</li>
+            <li>How would you shard the database? What sharding key would you use?</li>
+            <li>Design for analytics: how do you track clicks without blocking the redirect?</li>
+          </ul>
+        </div>
+        <div id="q1-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>URL shorteners are the quintessential systems design question. They're simple enough to design in 45 minutes but complex enough to test deep knowledge. The key differentiator is how you handle the read-heavy workload (redirects) vs. the write-heavy workload (new URLs). Senior candidates should mention caching and database choice; staff candidates should discuss sharding and eventual consistency.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://redis.io/docs/management/scaling/" class="doc-link" target="_blank" rel="noopener">Redis: Scaling</a></li>
+            <li><a href="https://pkg.go.dev/hash/crc32" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: hash/crc32</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">2. Design a distributed rate limiter.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>Your service runs across 10 nodes. You need to enforce a global rate limit: 1000 requests per minute per user across all nodes. Design the system. Consider: synchronization strategy, consistency model, failure modes, and performance.</p>
+
+        <div class="workspace-status" id="ws-q2"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q2-hint">Hint</button>
+          <button class="toggle-btn" data-target="q2-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q2-context">Context</button>
+        </div>
+
+        <div id="q2-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Options include: centralized Redis (simple but has a bottleneck), local token buckets with gossip/periodic sync (approximate but fast), or a distributed consensus protocol (accurate but slow). Start with the trade-offs and pick based on requirements.</p>
+        </div>
+        <div id="q2-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What happens if Redis is down? Should you fail open or fail closed?</li>
+            <li>How would you handle clock skew between nodes?</li>
+            <li>What if the limit is per-IP instead of per-user? How does that change the design?</li>
+            <li>Discuss the CAP theorem implications of your design.</li>
+          </ul>
+        </div>
+        <div id="q2-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Distributed rate limiting is a real production problem. The centralized vs. decentralized trade-off is a classic staff-level discussion. The "fail open vs. fail closed" follow-up tests your operational thinking. At staff level, you should be able to discuss how this integrates with API gateways (e.g., Kong, Envoy) and service mesh.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://redis.io/docs/reference/patterns/distributed-locks/" class="doc-link" target="_blank" rel="noopener">Redis: Distributed Locks</a></li>
+            <li><a href="https://pkg.go.dev/golang.org/x/time/rate" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/time/rate</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">3. Design a job queue with exactly-once semantics.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>Build a job queue system where each job must be processed exactly once. Jobs can fail and be retried. Discuss: idempotency, deduplication, at-least-once delivery, and the impossibility of exactly-once in distributed systems. Provide a design that achieves "effectively exactly-once" in practice.</p>
+
+        <div class="workspace-status" id="ws-q3"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q3-hint">Hint</button>
+          <button class="toggle-btn" data-target="q3-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q3-context">Context</button>
+        </div>
+
+        <div id="q3-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>The key insight is that exactly-once delivery is impossible, but exactly-once processing is achievable with idempotency. The pattern is: assign a unique ID to each job, store the result keyed by ID, and deduplicate before processing. The acknowledgment and result storage must be atomic.</p>
+        </div>
+        <div id="q3-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you handle job ordering? Is FIFO guaranteed?</li>
+            <li>What if a job is poisoned and crashes the worker every time?</li>
+            <li>How would you implement delayed jobs (e.g., "process this in 5 minutes")?</li>
+            <li>Discuss the Two Generals Problem and why it makes exactly-once delivery impossible.</li>
+          </ul>
+        </div>
+        <div id="q3-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Job queues are the backbone of async processing. The exactly-once discussion is a classic interview litmus test for understanding distributed systems fundamentals. The "effectively exactly-once" pattern (idempotency + deduplication) is used in payment processing, inventory management, and any system where duplication is catastrophic. Staff engineers should be able to explain why naive approaches fail and what the industry standard solutions are (e.g., Kafka's idempotent producer, SQS FIFO + deduplication).</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://kafka.apache.org/documentation/" class="doc-link" target="_blank" rel="noopener">Apache Kafka Documentation</a></li>
+            <li><a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html" class="doc-link" target="_blank" rel="noopener">AWS SQS: FIFO Queues</a></li>
+            <li><a href="https://pkg.go.dev/database/sql" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: database/sql</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">4. Design a real-time notification system.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Design a system that pushes notifications to millions of users in real-time. Notifications can be triggered by events (e.g., a message, a price alert). Support: WebSocket, push notifications (APNs/FCM), and email. Users can set preferences per channel. Discuss fan-out, delivery guarantees, and backpressure.</p>
+
+        <div class="workspace-status" id="ws-q4"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q4-hint">Hint</button>
+          <button class="toggle-btn" data-target="q4-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q4-context">Context</button>
+        </div>
+
+        <div id="q4-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Break it into: event ingestion (Kafka), fan-out (per-user queue or shared topic), and delivery (WebSocket manager, push gateway, email worker). Use a queue per user or per user shard to avoid head-of-line blocking. For WebSocket, maintain a connection registry.</p>
+        </div>
+        <div id="q4-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What if a user has 10M followers? How do you avoid a thundering herd?</li>
+            <li>How do you handle a user who is offline? Do you buffer indefinitely?</li>
+            <li>What if a notification channel is down? How do you retry without spamming?</li>
+            <li>How would you implement "read receipts" across channels?</li>
+          </ul>
+        </div>
+        <div id="q4-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Real-time notification systems are some of the most complex backend systems. The fan-out problem (1 event → N users) is a classic scalability challenge. The offline buffering question tests your understanding of bounded vs. unbounded queues. At staff level, you should discuss how to measure and optimize delivery latency (p50, p99, p99.9).</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://kafka.apache.org/documentation/" class="doc-link" target="_blank" rel="noopener">Apache Kafka Documentation</a></li>
+            <li><a href="https://developer.apple.com/documentation/usernotifications" class="doc-link" target="_blank" rel="noopener">Apple: User Notifications</a></li>
+            <li><a href="https://firebase.google.com/docs/cloud-messaging" class="doc-link" target="_blank" rel="noopener">Firebase Cloud Messaging</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">5. Design an API versioning strategy for a growing service.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Your API has 1000+ clients. You need to introduce a breaking change (e.g., changing how pagination works). Design a versioning strategy that minimizes client disruption. Discuss: URL versioning vs. header versioning, backward compatibility, deprecation lifecycle, and how to enforce sunset deadlines.</p>
+
+        <div class="workspace-status" id="ws-q5"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q5-hint">Hint</button>
+          <button class="toggle-btn" data-target="q5-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q5-context">Context</button>
+        </div>
+
+        <div id="q5-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>URL versioning (<code>/v1/</code>, <code>/v2/</code>) is the simplest but pollutes the URL. Header versioning (<code>Accept: application/vnd.api.v2+json</code>) is cleaner but harder for clients. The real answer is: always be backward compatible if possible, use versioning as a last resort, and have a clear deprecation policy with automated client communication.</p>
+        </div>
+        <div id="q5-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you implement a compatibility layer that translates v1 requests to v2 internally?</li>
+            <li>What if a client never updates? How do you handle long-tail deprecation?</li>
+            <li>How would you use feature flags to roll out a new API version gradually?</li>
+            <li>Discuss the pros and cons of gRPC vs. REST for API versioning.</li>
+          </ul>
+        </div>
+        <div id="q5-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>API versioning is a product engineering problem as much as a technical one. The best technical solution is useless if clients don't migrate. Senior engineers should understand the technical options; staff engineers should understand how to drive cross-team coordination and deprecation programs. This is a common area where technical decisions have business impact.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://grpc.io/docs/what-is-grpc/introduction/" class="doc-link" target="_blank" rel="noopener">gRPC: Introduction</a></li>
+            <li><a href="https://pkg.go.dev/net/http" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: net/http</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">6. Design a circuit breaker for a microservice call.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Implement a circuit breaker pattern for calling a downstream service. The breaker should open after N failures in a window, half-open after a timeout, and close after a successful probe. Provide the state machine, the metrics collection, and the Go code for a generic breaker.</p>
+
+        <div class="code-block-wrapper" data-template="systems-design/q06-circuit-breaker/breaker.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q06-circuit-breaker/breaker.go" data-problem="q6" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q6"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q6-hint">Hint</button>
+          <button class="toggle-btn" data-target="q6-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q6-context">Context</button>
+        </div>
+
+        <div id="q6-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Use a sliding window to track failures (see the sliding window algorithm question). The state machine transitions are: Closed → Open on threshold, Open → HalfOpen after timeout, HalfOpen → Closed on success, HalfOpen → Open on failure. Use a mutex for state transitions.</p>
+        </div>
+        <div id="q6-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you share the breaker state across a cluster (e.g., for sticky sessions)?</li>
+            <li>What if the failure is a timeout? How do you distinguish between slow and failing?</li>
+            <li>How would you integrate this with a service mesh (e.g., Istio, Linkerd)?</li>
+            <li>Discuss the difference between circuit breaker and bulkhead pattern.</li>
+          </ul>
+        </div>
+        <div id="q6-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Circuit breakers are one of the four pillars of microservice resilience (along with retry, timeout, and bulkhead). Understanding the state machine and the edge cases (half-open behavior, timeout vs. error) is critical. The service mesh follow-up is a staff-level question because it shows you understand the organizational trade-off between library-based and infrastructure-based resilience.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://istio.io/latest/docs/concepts/traffic-management/" class="doc-link" target="_blank" rel="noopener">Istio: Traffic Management</a></li>
+            <li><a href="https://linkerd.io/2.15/features/" class="doc-link" target="_blank" rel="noopener">Linkerd: Features</a></li>
+            <li><a href="https://pkg.go.dev/time" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: time</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">7. Design an observability pipeline for a Go service.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>Your team runs 50 Go services. You need to collect logs, metrics, and traces with minimal overhead. Design the pipeline: instrumentation, collection, storage, and querying. Discuss: structured logging, metric cardinality, trace sampling, and alerting. Include code examples for the instrumentation layer.</p>
+
+        <div class="code-block-wrapper" data-template="systems-design/q07-observability/middleware.go">
+          <div class="code-header">
+            <span class="code-label">Instrumentation Example</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q07-observability/middleware.go" data-problem="q7" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q7"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q7-hint">Hint</button>
+          <button class="toggle-btn" data-target="q7-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q7-context">Context</button>
+        </div>
+
+        <div id="q7-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Think about the three pillars: logs (structured, e.g., slog), metrics (Prometheus-style counters/histograms), traces (OpenTelemetry). The key is low overhead: async batching, sampling for traces, and avoiding high-cardinality metrics (e.g., don't label by user ID). For storage, use separate backends optimized for each data type.</p>
+        </div>
+        <div id="q7-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How do you prevent high-cardinality metrics from exploding your TSDB?</li>
+            <li>What's the difference between logs and traces? When do they overlap?</li>
+            <li>How would you implement distributed tracing across services? What headers are needed?</li>
+            <li>How do you balance observability overhead vs. the value of the data?</li>
+          </ul>
+        </div>
+        <div id="q7-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Observability is not just tooling — it's a design philosophy. Staff engineers are expected to have opinions on the trade-offs between instrumentation overhead and debuggability. The high-cardinality question is a common production incident root cause. The OpenTelemetry standard is increasingly the industry default, and you should understand how it integrates with Go's runtime.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://opentelemetry.io/docs/" class="doc-link" target="_blank" rel="noopener">OpenTelemetry Documentation</a></li>
+            <li><a href="https://pkg.go.dev/log/slog" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: log/slog</a></li>
+            <li><a href="https://prometheus.io/docs/introduction/overview/" class="doc-link" target="_blank" rel="noopener">Prometheus: Overview</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">8. Design a leader election mechanism for a distributed service.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>You have a service that must run a background task on exactly one node at a time. Design a leader election mechanism. Discuss: split-brain prevention, network partition handling, graceful handoff, and liveness detection. Provide a Go sketch using a distributed lock (e.g., Redis Redlock, etcd, or Consul).</p>
+
+        <div class="code-block-wrapper" data-template="systems-design/q08-leader-election/leaderelection.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q08-leader-election/leaderelection.go" data-problem="q8" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q8"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q8-hint">Hint</button>
+          <button class="toggle-btn" data-target="q8-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q8-context">Context</button>
+        </div>
+
+        <div id="q8-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>The core loop: acquire lock → if acquired, start leader work and a background renew goroutine → if renew fails, cancel leader context and try to re-acquire. The lock must be tied to a unique node ID to prevent a zombie node from holding the lock after a network partition heals.</p>
+        </div>
+        <div id="q8-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What is the Redlock algorithm? What are the criticisms of it?</li>
+            <li>How does etcd's leader election work? Why is it more reliable than Redis?</li>
+            <li>What happens if the leader task takes longer than the TTL? How do you handle it?</li>
+            <li>Discuss the FLP impossibility result and how it applies to leader election.</li>
+          </ul>
+        </div>
+        <div id="q8-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Leader election is the foundation of distributed coordination. It's used in Kubernetes controllers, database failover, and batch job scheduling. The Redlock controversy (Martin Kleppmann's blog post) is a famous distributed systems discussion point. At staff level, you should understand the theoretical limits (FLP impossibility) and the practical compromises (etcd, ZooKeeper, Raft-based systems). You should also be able to discuss how Go's context and goroutines make the leader loop implementation clean and idiomatic.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://etcd.io/docs/v3.5/dev-guide/api_concurrency_reference_v3/" class="doc-link" target="_blank" rel="noopener">etcd: Concurrency API</a></li>
+            <li><a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html" class="doc-link" target="_blank" rel="noopener">Martin Kleppmann: How to do distributed locking</a></li>
+            <li><a href="https://pkg.go.dev/context" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: context</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="index.html" style="color: var(--accent-blue);">&larr; Back to Home</a></p>
+  </footer>
+</body>
+</html>

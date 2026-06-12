@@ -1,0 +1,12 @@
+services:
+  go-interview-guide:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-interview-guide
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount the host's workspaces directory so generated workspaces persist
+      - ./workspaces:/app/workspaces
+    restart: unless-stopped

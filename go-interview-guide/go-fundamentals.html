@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go Fundamentals - Interview Guide</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-content">
+      <a href="index.html" class="site-title">Go Interview Guide</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="go-fundamentals.html">Go Fundamentals</a></li>
+          <li><a href="concurrency.html">Concurrency</a></li>
+          <li><a href="algorithms.html">Algorithms</a></li>
+          <li><a href="systems-design.html">Systems Design</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <h1>Go Fundamentals</h1>
+      <p>Core language mechanics, memory, and idioms. The expectation at senior and staff levels is not just correct code, but the ability to explain trade-offs and edge cases.</p>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">1. Implement a function that safely appends to a slice while avoiding accidental sharing of the underlying array.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Write a function <code>AppendUnique(dest, src []int) []int</code> that appends elements from <code>src</code> to <code>dest</code> without causing the caller to accidentally share the backing array with other slices. Include a demonstration that proves the original <code>dest</code> is unaffected if the returned slice grows beyond <code>dest</code>'s capacity.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q01-slice-append/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q01-slice-append/main.go" data-problem="q1" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Expected Behavior</h4>
+          <pre>original := []int{1, 2, 3}
+result := AppendUnique(original, []int{4, 5, 6, 7, 8})
+// result should be [1 2 3 4 5 6 7 8]
+// original should remain [1 2 3] regardless of capacity</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q1"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q1-hint">Hint</button>
+          <button class="toggle-btn" data-target="q1-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q1-context">Context</button>
+        </div>
+
+        <div id="q1-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Think about <code>append</code>'s behavior when it exceeds capacity. What happens to the backing array? How can you force a new allocation?</p>
+        </div>
+        <div id="q1-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What if <code>dest</code> has enough capacity? Should you still copy?</li>
+            <li>How does this relate to the "slice header" (pointer, len, cap)?</li>
+            <li>Would you implement this differently for a library vs. application code?</li>
+          </ul>
+        </div>
+        <div id="q1-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Slice aliasing is a common source of subtle bugs in Go. At senior levels, you should be able to reason about memory sharing and when to force copies. This question tests whether you understand the underlying array mechanics, not just the syntax.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/ref/spec#Appending_and_copying_slices" class="doc-link" target="_blank" rel="noopener">Go Spec: Appending and Copying Slices</a></li>
+            <li><a href="https://go.dev/blog/slices-intro" class="doc-link" target="_blank" rel="noopener">Go Blog: Slices — usage and internals</a></li>
+            <li><a href="https://pkg.go.dev/builtin#append" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: builtin.append</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">2. Explain and fix the bug in this struct comparison.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>The code below is meant to check if two config structs are equal. It fails in production. Identify the bug and fix it.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q02-struct-comparison/main.go">
+          <div class="code-header">
+            <span class="code-label">Buggy Code</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q02-struct-comparison/main.go" data-problem="q2" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q2"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q2-hint">Hint</button>
+          <button class="toggle-btn" data-target="q2-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q2-context">Context</button>
+        </div>
+
+        <div id="q2-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Go allows struct comparison with <code>==</code> only when all fields are comparable. Which field type here is not comparable?</p>
+        </div>
+        <div id="q2-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>Write a proper <code>Equal</code> method for <code>Config</code>.</li>
+            <li>How would you handle this if the struct had a <code>map</code> field?</li>
+            <li>What about <code>reflect.DeepEqual</code>? When is it appropriate vs. too slow?</li>
+          </ul>
+        </div>
+        <div id="q2-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Struct comparison rules are a common source of compilation errors that confuse developers. Understanding which types are comparable (and why slices and maps aren't) demonstrates deep knowledge of Go's type system. In production, you'd typically write explicit equality methods or use generated code.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/ref/spec#Comparison_operators" class="doc-link" target="_blank" rel="noopener">Go Spec: Comparison Operators</a></li>
+            <li><a href="https://pkg.go.dev/reflect#DeepEqual" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: reflect.DeepEqual</a></li>
+            <li><a href="https://pkg.go.dev/cmp" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: cmp (Go 1.21+)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">3. Implement a generic Result type with proper error handling.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>Go does not have a built-in <code>Result&lt;T, E&gt;</code> type like Rust. Design and implement a generic <code>Result[T]</code> type that holds either a value or an error. Provide <code>Map</code>, <code>MapErr</code>, and <code>OrElse</code> methods. Demonstrate usage with a chain of operations that might fail.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q03-generic-result/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q03-generic-result/main.go" data-problem="q3" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q3"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q3-hint">Hint</button>
+          <button class="toggle-btn" data-target="q3-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q3-context">Context</button>
+        </div>
+
+        <div id="q3-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>You'll need two fields: one for the value and one for the error. Use a boolean or a nil check to distinguish which is valid. Consider the zero-value semantics carefully.</p>
+        </div>
+        <div id="q3-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>Why doesn't Go have a built-in Result type? Discuss the philosophy.</li>
+            <li>How does this interact with Go's explicit error handling culture?</li>
+            <li>What are the performance implications of this wrapper?</li>
+          </ul>
+        </div>
+        <div id="q3-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Go's explicit error handling is a core design choice. Building a generic Result type requires understanding generics, zero values, and the language's philosophy. At staff level, you should be able to discuss why Go made this trade-off and when an abstraction like this is actually worth it vs. when it adds unnecessary complexity.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/doc/tutorial/generics" class="doc-link" target="_blank" rel="noopener">Go Tutorial: Getting Started with Generics</a></li>
+            <li><a href="https://go.dev/blog/when-generics" class="doc-link" target="_blank" rel="noopener">Go Blog: When to Use Generics</a></li>
+            <li><a href="https://go.dev/ref/spec#Type_constraints" class="doc-link" target="_blank" rel="noopener">Go Spec: Type Constraints</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">4. Write a function that unmarshals JSON into a struct while handling missing and null fields gracefully.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Given the JSON payloads below, design a struct and a helper that can distinguish between <em>missing</em> fields, <em>null</em> fields, and <em>present</em> fields. This is a common pattern for PATCH APIs.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q04-json-null/main.go">
+          <div class="code-header">
+            <span class="code-label">Test Payloads</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q04-json-null/main.go" data-problem="q4" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Expected Output</h4>
+          <pre>Case 1: Age = 30 (present)
+Case 2: Age = null (explicitly null)
+Case 3: Age = missing (field not in JSON)</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q4"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q4-hint">Hint</button>
+          <button class="toggle-btn" data-target="q4-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q4-context">Context</button>
+        </div>
+
+        <div id="q4-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Consider a custom type that implements <code>json.Unmarshaler</code>. You need a third state beyond "has value" and "is nil" — you need "was not present".</p>
+        </div>
+        <div id="q4-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you handle this for multiple field types without duplicating code?</li>
+            <li>What if the API must also support setting a field to null (i.e., clearing it)?</li>
+            <li>Discuss the trade-off between this approach and using a <code>map[string]json.RawMessage</code>.</li>
+          </ul>
+        </div>
+        <div id="q4-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Partial updates (PATCH) are standard in REST APIs. Go's default JSON unmarshaling does not distinguish between missing and null fields. This question tests whether you can leverage interfaces to solve real API design problems. The answer should also discuss maintainability and code generation approaches.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://pkg.go.dev/encoding/json#Unmarshaler" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: json.Unmarshaler</a></li>
+            <li><a href="https://pkg.go.dev/encoding/json#RawMessage" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: json.RawMessage</a></li>
+            <li><a href="https://go.dev/blog/json" class="doc-link" target="_blank" rel="noopener">Go Blog: JSON and Go</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">5. Implement a generic pool that limits object reuse to the same type.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Go's <code>sync.Pool</code> is not type-safe and can suffer from type assertions. Build a generic, type-safe object pool <code>Pool[T]</code> with <code>Get() T</code> and <code>Put(T)</code> methods. It should use <code>sync.Pool</code> under the hood but expose a clean API. Include a benchmark comparing it to a naive allocation.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q05-generic-pool/pool.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q05-generic-pool/pool.go" data-problem="q5" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q5"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q5-hint">Hint</button>
+          <button class="toggle-btn" data-target="q5-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q5-context">Context</button>
+        </div>
+
+        <div id="q5-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Store a <code>sync.Pool</code> inside your generic struct. The trick is that <code>sync.Pool</code> stores <code>any</code>, so you can type-assert on Get. Since the pool is per-type, the assertion is always safe.</p>
+        </div>
+        <div id="q5-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>When is <code>sync.Pool</code> actually faster than GC? What are the gotchas?</li>
+            <li>How does <code>sync.Pool</code> interact with GC cycles? Explain the clearing behavior.</li>
+            <li>Would you use this for a request-scoped object? Why or why not?</li>
+          </ul>
+        </div>
+        <div id="q5-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Object pooling is a classic optimization, but Go's GC is very efficient. The real value of this question is understanding <em>when</em> pooling helps (high-frequency, short-lived allocations) and when it hurts (complex object lifetimes, memory retention). At senior level, you should know the trade-offs, not just the API.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://pkg.go.dev/sync#Pool" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.Pool</a></li>
+            <li><a href="https://go.dev/doc/effective_go#leaky_buffer" class="doc-link" target="_blank" rel="noopener">Effective Go: Leaky Buffer Pattern</a></li>
+            <li><a href="https://go.dev/doc/gc-guide" class="doc-link" target="_blank" rel="noopener">Go GC Guide</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">6. What does this code print and why? Fix the memory leak.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>This code has a subtle memory leak related to how the loop variable is captured. Explain what happens and fix it.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q06-memory-leak/main.go">
+          <div class="code-header">
+            <span class="code-label">Buggy Code</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q06-memory-leak/main.go" data-problem="q6" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q6"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q6-hint">Hint</button>
+          <button class="toggle-btn" data-target="q6-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q6-context">Context</button>
+        </div>
+
+        <div id="q6-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Go 1.22 changed loop variable semantics, but the underlying closure capture mechanism still holds for older code. Even in modern Go, think about what the closure references and what the GC can reclaim.</p>
+        </div>
+        <div id="q6-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How did Go 1.22 change this behavior? Would the fix be different?</li>
+            <li>What other patterns besides closures can cause accidental retention of large allocations?</li>
+            <li>How would you detect this in production? Mention <code>runtime.SetFinalizer</code> or profiling.</li>
+          </ul>
+        </div>
+        <div id="q6-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Memory leaks in Go are usually about retention, not lost pointers. Large slices held by closures or method values are a classic source of unexpected memory pressure. Staff engineers should be able to reason about escape analysis and GC behavior to debug production issues.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/blog/loopvar-preview" class="doc-link" target="_blank" rel="noopener">Go Blog: Fixing For Loops in Go 1.22</a></li>
+            <li><a href="https://go.dev/doc/go1.22" class="doc-link" target="_blank" rel="noopener">Go 1.22 Release Notes</a></li>
+            <li><a href="https://pkg.go.dev/runtime#SetFinalizer" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: runtime.SetFinalizer</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">7. Implement a functional options constructor for a complex service.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>Functional options is a common Go pattern for clean, extensible constructors. Implement a <code>NewServer</code> constructor with options for <code>WithPort</code>, <code>WithTimeout</code>, <code>WithLogger</code>, and <code>WithTLS</code>. The server should have sensible defaults. Include validation that returns an error if an invalid combination is provided.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q07-functional-options/server.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q07-functional-options/server.go" data-problem="q7" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q7"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q7-hint">Hint</button>
+          <button class="toggle-btn" data-target="q7-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q7-context">Context</button>
+        </div>
+
+        <div id="q7-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Apply defaults first, then loop through options. Return an error from the option function itself so validation can happen at configuration time. Consider what happens if the same option is passed twice.</p>
+        </div>
+        <div id="q7-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>How would you expose an option that sets a field conditionally (e.g., <code>WithPort</code> only if not already set)?</li>
+            <li>What are the downsides of functional options vs. a config struct?</li>
+            <li>How would you support option composition for sub-services?</li>
+          </ul>
+        </div>
+        <div id="q7-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Functional options is one of Go's most idiomatic patterns for clean APIs. It was popularized by Rob Pike and is used throughout the standard library (e.g., <code>tls.Config</code> predates it, but many third-party libraries use it). Understanding when to use it vs. a config struct shows API design maturity.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/blog/self-referential-functions" class="doc-link" target="_blank" rel="noopener">Go Blog: Self-referential Functions and Design</a></li>
+            <li><a href="https://go.dev/doc/effective_go#interfaces" class="doc-link" target="_blank" rel="noopener">Effective Go: Interfaces</a></li>
+            <li><a href="https://go.dev/blog/self-referential-functions" class="doc-link" target="_blank" rel="noopener">Dave Cheney: Functional Options for Friendly APIs</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">8. Explain interface satisfaction in Go and implement a compile-time check.</h3>
+        <span class="level-badge level-staff">Staff</span>
+      </div>
+      <div class="question-body">
+        <p>Go interfaces are satisfied implicitly. Write a small package that defines a <code>Notifier</code> interface and two implementations (Email, SMS). Ensure that if either implementation fails to satisfy the interface, the code fails to compile. Then discuss the trade-offs of implicit vs. explicit interface satisfaction.</p>
+
+        <div class="code-block-wrapper" data-template="fundamentals/q08-interface-satisfaction/notify.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="fundamentals/q08-interface-satisfaction/notify.go" data-problem="q8" data-section="fundamentals">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q8"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q8-hint">Hint</button>
+          <button class="toggle-btn" data-target="q8-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q8-context">Context</button>
+        </div>
+
+        <div id="q8-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Use a blank identifier assignment with a type assertion. The standard library does this frequently. Example: <code>var _ Notifier = (*Email)(nil)</code></p>
+        </div>
+        <div id="q8-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What happens if the method set is on a value receiver vs. pointer receiver? Explain the difference.</li>
+            <li>How do interfaces interact with embedding and promotion?</li>
+            <li>Discuss the "accept interfaces, return structs" idiom. When does it break down?</li>
+          </ul>
+        </div>
+        <div id="q8-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Implicit interfaces are Go's superpower for decoupling, but they can also be a source of confusion. The compile-time check pattern is a common defensive practice. At staff level, you should be able to discuss how Go's interface model enables mock-free testing, clean architecture, and cross-package compatibility.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+            <li><a href="https://go.dev/doc/effective_go#interfaces" class="doc-link" target="_blank" rel="noopener">Effective Go: Interfaces and Other Types</a></li>
+            <li><a href="https://go.dev/ref/spec#Interface_types" class="doc-link" target="_blank" rel="noopener">Go Spec: Interface Types</a></li>
+            <li><a href="https://go.dev/blog/iface" class="doc-link" target="_blank" rel="noopener">Go Blog: Go Interfaces</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="concurrency.html" style="color: var(--accent-blue);">Next: Concurrency &rarr;</a></p>
+  </footer>
+</body>
+</html>
