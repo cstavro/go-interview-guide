@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Algorithms - Interview Guide</title>
+  <title>Projects - Interview Guide</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -26,27 +26,27 @@
 
   <main class="container">
     <div class="section-header">
-      <h1>Algorithms</h1>
-      <p>Practical algorithmic thinking for production systems. No leetcode gotchas — just the kind of problems you solve when building real backends, pipelines, and data structures.</p>
+      <h1>Projects</h1>
+      <p>Realistic project problems that involve debugging or extending a small existing application. These are designed for AI-assisted coding interviews — the problems encourage small, focused AI usage rather than simply asking an agent to "fix this" or "implement this".</p>
     </div>
 
     <!-- Question 1 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">1. Implement a sliding window rate limiter in memory.</h3>
+        <h3 class="question-title">1. Debug and fix a goroutine leak in an HTTP retry client.</h3>
         <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>Given a stream of requests (each with a user ID and timestamp), implement a function that checks if a request is allowed based on a sliding window limit: no more than N requests per user in the last M seconds. Optimize for memory and time.</p>
+        <p>A small HTTP client with retry logic is leaking goroutines. The client uses goroutines for concurrent requests, but when the context is cancelled, the goroutine blocks forever trying to send on a channel. The tests pass, but the benchmark shows a growing goroutine count.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q01-sliding-window/main.go">
+        <div class="code-block-wrapper" data-template="projects/q01-debug-http-retry/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q01-sliding-window/main.go" data-problem="q1" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q01-debug-http-retry/main.go" data-problem="q1" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
@@ -55,15 +55,9 @@
         </div>
 
         <div class="test-box">
-          <h4>Test Data</h4>
-          <pre>rl := NewSlidingWindowRateLimiter(60*time.Second, 3)
-
-user := "alice"
-rl.Allow(user, time.Unix(0, 0))   // true
-rl.Allow(user, time.Unix(10, 0))  // true
-rl.Allow(user, time.Unix(20, 0))  // true
-rl.Allow(user, time.Unix(30, 0))  // false (limit exceeded)
-rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre>
+          <h4>Test Scenario</h4>
+          <pre>go test -bench=. -run=^$ -count=5
+// benchmark should show stable goroutine count</pre>
         </div>
 
         <div class="workspace-status" id="ws-q1"></div>
@@ -75,25 +69,26 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
 
         <div id="q1-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Store a ring buffer or circular slice of timestamps per user. On each request, drop timestamps older than <code>now - window</code>, then check the count. A ring buffer gives O(1) amortized time and bounded memory.</p>
+          <p>When the <code>ctx.Done()</code> branch is selected, the goroutine is still blocked on <code>respCh &lt;- resp</code> or <code>errCh &lt;- err</code>. Use a buffered channel or a <code>select</code> with a <code>done</code> channel in the goroutine.</p>
         </div>
         <div id="q1-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you evict stale users to prevent memory growth?</li>
-            <li>What if you need to support millions of users? How would you shard this?</li>
-            <li>Compare fixed window vs. sliding window. Why is sliding window "fairer"?</li>
+            <li>How would you detect this leak in production? Mention <code>runtime.NumGoroutine</code> and pprof.</li>
+            <li>What is the <code>go.uber.org/goleak</code> library and how does it help?</li>
+            <li>How would you refactor this to avoid goroutines per retry entirely?</li>
           </ul>
         </div>
         <div id="q1-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Sliding window rate limiting is a standard backend requirement. The naive approach (storing all requests) has unbounded memory. The ring buffer approach is the production answer. The sharding follow-up is a classic distributed systems question that separates senior from staff.</p>
+          <p>Goroutine leaks are a common source of production OOMs. The classic pattern is a goroutine that sends on a channel that nobody receives. This question tests whether you can reason about channel lifetimes and context cancellation. The fix is simple once you see the pattern, but the bug is subtle enough to hide in code review.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/container/ring" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/ring</a></li>
-            <li><a href="https://pkg.go.dev/time" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: time</a></li>
+            <li><a href="https://pkg.go.dev/runtime#NumGoroutine" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: runtime.NumGoroutine</a></li>
+            <li><a href="https://pkg.go.dev/go.uber.org/goleak" class="doc-link" target="_blank" rel="noopener">go.uber.org/goleak</a></li>
+            <li><a href="https://go.dev/blog/pipelines" class="doc-link" target="_blank" rel="noopener">Go Blog: Pipelines and Cancellation</a></li>
           </ul>
         </div>
       </div>
@@ -102,20 +97,20 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
     <!-- Question 2 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">2. Find the top K frequent elements in a stream.</h3>
+        <h3 class="question-title">2. Profile and optimize a log parser.</h3>
         <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>Given a stream of strings (e.g., HTTP request paths), implement a data structure that can return the top K most frequent elements at any point. The stream is too large to store entirely. Optimize for memory and query speed.</p>
+        <p>A log parser processes a large stream of text lines. The implementation is correct but allocates excessively. Your task is to run the benchmark, use <code>go test -bench -memprofile</code> to understand the hot path, and optimize it.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q02-top-k/topk.go">
+        <div class="code-block-wrapper" data-template="projects/q02-profile-parser/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q02-top-k/topk.go" data-problem="q2" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q02-profile-parser/main.go" data-problem="q2" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
@@ -132,25 +127,26 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
 
         <div id="q2-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>A min-heap of size K is the classic answer. But with a stream, you also need a frequency map. Maintain a map of all seen items and a min-heap for the top K. On each observe, update the map and possibly the heap.</p>
+          <p>Run <code>go test -bench=. -benchmem</code> to see allocations. The hot path is likely <code>strings.Split</code> and <code>strings.Join</code>. Consider using <code>strings.IndexByte</code> or <code>strings.Fields</code> instead.</p>
         </div>
         <div id="q2-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What if the stream is unbounded and you need to forget old data? Implement sliding window top-K.</li>
-            <li>How would you parallelize this across multiple goroutines?</li>
-            <li>Discuss the Count-Min Sketch as an approximate alternative. When is it appropriate?</li>
+            <li>How would you use <code>strings.IndexByte</code> to parse the line with zero allocations?</li>
+            <li>What is the trade-off between readability and performance here?</li>
+            <li>When would you stop optimizing and declare it "good enough"?</li>
           </ul>
         </div>
         <div id="q2-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Top-K is a fundamental analytics problem. In production, you'll see it in request path analysis, error tracking, and APM dashboards. The exact min-heap approach works for moderate cardinalities. The Count-Min Sketch follow-up is a great conversation starter about approximate algorithms and the memory/accuracy trade-off.</p>
+          <p>Profiling is a fundamental skill for senior engineers. In production, you'll use pprof to find hot paths. The key insight is that string splitting in Go allocates a new slice for every call. For high-throughput parsers, this matters. The ability to read a profile and make targeted changes is more valuable than memorizing micro-optimizations.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/container/heap" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/heap</a></li>
-            <li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+            <li><a href="https://pkg.go.dev/testing" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: testing</a></li>
+            <li><a href="https://go.dev/doc/diagnostics" class="doc-link" target="_blank" rel="noopener">Go Doc: Diagnostics</a></li>
+            <li><a href="https://pkg.go.dev/strings" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: strings</a></li>
           </ul>
         </div>
       </div>
@@ -159,35 +155,25 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
     <!-- Question 3 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">3. Implement a consistent hash ring for load balancing.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">3. Fix middleware order and add timing.</h3>
+        <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>Build a consistent hash ring for distributing keys across a set of nodes. Support adding and removing nodes with minimal key movement. Include virtual nodes to improve distribution uniformity. Provide a function to get the node for a given key.</p>
+        <p>This HTTP server has middleware, but the panic recovery middleware is applied in the wrong order. When a handler panics, the recovery middleware catches it but the logging middleware never sees the request — so panics are invisible in logs. Fix the order, then add a <code>TimingMiddleware</code>.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q03-consistent-hash/hashring.go">
+        <div class="code-block-wrapper" data-template="projects/q03-fix-middleware/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q03-consistent-hash/hashring.go" data-problem="q3" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q03-fix-middleware/main.go" data-problem="q3" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
-        </div>
-
-        <div class="test-box">
-          <h4>Test Scenario</h4>
-          <pre>ring := New([]string{"node-a", "node-b", "node-c"}, 150)
-node := ring.GetNode("user:12345")
-// should consistently return the same node for the same key
-
-ring.RemoveNode("node-b")
-// only keys mapped to node-b should move</pre>
         </div>
 
         <div class="workspace-status" id="ws-q3"></div>
@@ -199,26 +185,25 @@ ring.RemoveNode("node-b")
 
         <div id="q3-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Hash each virtual node (e.g., <code>node#0</code>, <code>node#1</code>) to a position on a circle. Store sorted positions in a slice. To find the node for a key, hash the key and binary search for the next position on the ring. Wrap around to the first node if needed.</p>
+          <p>Middleware wraps from the outside in. The last middleware applied is the first to execute. If you want logging to run <em>before</em> recovery (so it logs even when recovery happens), apply logging <em>after</em> recovery in the constructor.</p>
         </div>
         <div id="q3-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you implement replication (a key maps to N nodes)?</li>
-            <li>What hash function would you use? Why not MD5 or SHA-1?</li>
-            <li>How does this compare to rendezvous hashing? When is each better?</li>
+            <li>How would you make the middleware chain configurable at runtime (e.g., via a slice)?</li>
+            <li>What happens if a middleware panics? How do you protect the outer layer?</li>
+            <li>How would you implement a middleware that adds a request ID to the context and logs it?</li>
           </ul>
         </div>
         <div id="q3-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Consistent hashing is the foundation of distributed caching (e.g., groupcache, Redis Cluster) and distributed storage. Understanding why it works (minimal rebalancing) and the virtual node optimization (uniformity) is a staff-level expectation. The comparison with rendezvous hashing is a great interview conversation.</p>
+          <p>Middleware ordering is a common source of confusion in Go. The wrapping order determines execution order. This is a realistic bug because it's easy to get wrong and hard to catch in tests unless you specifically test panic paths. The timing middleware addition is a typical "extend the codebase" task that mirrors production work.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/hash" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: hash</a></li>
-            <li><a href="https://pkg.go.dev/crypto/sha256" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: crypto/sha256</a></li>
-            <li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+            <li><a href="https://go.dev/doc/articles/wiki/" class="doc-link" target="_blank" rel="noopener">Go Doc: Writing Web Applications</a></li>
+            <li><a href="https://pkg.go.dev/net/http#Handler" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: net/http.Handler</a></li>
           </ul>
         </div>
       </div>
@@ -227,20 +212,20 @@ ring.RemoveNode("node-b")
     <!-- Question 4 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">4. Implement a simple interval tree for overlapping queries.</h3>
+        <h3 class="question-title">4. Fix a flaky concurrent test.</h3>
         <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>You have a set of time intervals representing scheduled maintenance windows. Implement a data structure that can efficiently find all intervals that overlap with a given query interval. Support insertion and deletion.</p>
+        <p>The <code>Counter</code> implementation is correct, but the test is flaky. It uses <code>time.Sleep</code> to wait for goroutines to finish. Fix the test without changing the implementation. Make it robust and fast.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q04-interval-tree/interval.go">
+        <div class="code-block-wrapper" data-template="projects/q04-fix-flaky-test/main_test.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Flaky Test</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q04-interval-tree/interval.go" data-problem="q4" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q04-fix-flaky-test/main_test.go" data-problem="q4" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
@@ -249,14 +234,9 @@ ring.RemoveNode("node-b")
         </div>
 
         <div class="test-box">
-          <h4>Test Data</h4>
-          <pre>t := NewTree()
-t.Insert(Interval{"a", time(1), time(5)})
-t.Insert(Interval{"b", time(3), time(7)})
-t.Insert(Interval{"c", time(8), time(10)})
-
-Overlapping(Interval{"q", time(2), time(4)})
-// expected: a, b</pre>
+          <h4>Test Command</h4>
+          <pre>go test -count=100
+// should pass consistently without increasing duration</pre>
         </div>
 
         <div class="workspace-status" id="ws-q4"></div>
@@ -268,25 +248,25 @@ Overlapping(Interval{"q", time(2), time(4)})
 
         <div id="q4-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>A balanced BST (e.g., augmented red-black or AVL tree) keyed by start time, where each node stores the maximum end time in its subtree. Query by checking if the left subtree could contain overlaps (max end >= query start). If not, skip the entire subtree.</p>
+          <p>Replace <code>time.Sleep</code> with a <code>sync.WaitGroup</code>. Wait for all goroutines to finish before asserting the counter value.</p>
         </div>
         <div id="q4-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What's the time complexity of insertion, deletion, and query?</li>
-            <li>How would you implement this if the interval count is small (e.g., < 100)?</li>
-            <li>What if intervals are half-open [start, end)? How does that affect overlap?</li>
+            <li>What if the implementation used a channel instead of a mutex? How would the test change?</li>
+            <li>How would you detect flakiness in CI? Mention <code>go test -count=N</code> and stress testing.</li>
+            <li>What is the difference between a flaky test and a flaky implementation?</li>
           </ul>
         </div>
         <div id="q4-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Interval trees are common in scheduling, resource allocation, and collision detection. For small sets, a simple slice scan is often faster in practice due to cache locality. The augmented BST is the theoretically correct answer, but the "small set" follow-up shows practical engineering judgment.</p>
+          <p>Flaky tests are a productivity killer. The root cause is often a misunderstanding of concurrency primitives. This question tests whether you can identify that the test is the problem, not the implementation. The constraint "don't change the implementation" is realistic — you often can't change production code, but you can improve the test.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
-            <li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+            <li><a href="https://pkg.go.dev/sync#WaitGroup" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.WaitGroup</a></li>
+            <li><a href="https://go.dev/doc/articles/race_detector" class="doc-link" target="_blank" rel="noopener">Go Doc: Race Detector</a></li>
           </ul>
         </div>
       </div>
@@ -295,35 +275,25 @@ Overlapping(Interval{"q", time(2), time(4)})
     <!-- Question 5 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">5. Find the longest common prefix among a set of strings.</h3>
+        <h3 class="question-title">5. Fix a race condition and add cache stats.</h3>
         <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>Given a slice of strings, find the longest common prefix. This is useful for path matching, auto-complete, and routing. Optimize for the case where most strings share a long prefix. Handle edge cases (empty slice, empty strings).</p>
+        <p>This simple in-memory TTL cache is not safe for concurrent use. Fix the race condition, then add a <code>Stats()</code> method that returns hit and miss counts. Run <code>go test -race</code> to confirm your fix.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q05-longest-prefix/main.go">
+        <div class="code-block-wrapper" data-template="projects/q05-extend-cache/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q05-longest-prefix/main.go" data-problem="q5" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q05-extend-cache/main.go" data-problem="q5" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
-        </div>
-
-        <div class="test-box">
-          <h4>Test Cases</h4>
-          <pre>[]string{"flower", "flow", "flight"}     // "fl"
-[]string{"dog", "racecar", "car"}     // ""
-[]string{}                            // ""
-[]string{"alone"}                     // "alone"
-[]string{"", "b"}                     // ""
-[]string{"prefix", "prefix", "prefix"} // "prefix"</pre>
         </div>
 
         <div class="workspace-status" id="ws-q5"></div>
@@ -335,26 +305,25 @@ Overlapping(Interval{"q", time(2), time(4)})
 
         <div id="q5-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Sort the strings first. Then only compare the first and last strings — the longest common prefix of the whole set must be the common prefix of these two extremes. This is O(N log N) for sorting but only O(M) for the comparison, where M is the length of the shortest string.</p>
+          <p>Use <code>sync.RWMutex</code> for the cache. For stats, increment counters inside the same lock region where you do the lookup. Be careful not to hold the lock during the <code>flushFn</code> callback if you add one later.</p>
         </div>
         <div id="q5-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What's the time and space complexity of your solution?</li>
-            <li>How would you solve this if the strings are in a Trie and you can't read them all into memory?</li>
-            <li>What if the strings are UTF-8? Does your solution handle multi-byte characters correctly?</li>
+            <li>Would you use <code>sync.Map</code> instead of a map + mutex? When is it better?</li>
+            <li>How would you add a background goroutine that evicts expired entries without blocking readers?</li>
+            <li>What is the memory overhead of a <code>sync.RWMutex</code> compared to a <code>sync.Mutex</code>?</li>
           </ul>
         </div>
         <div id="q5-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>This appears in routing (HTTP path prefixes), logging (finding common log prefixes), and configuration management. The sort-then-compare approach is a neat optimization that many candidates miss. The Trie follow-up is a great segue into data structure design.</p>
+          <p>Data races are the most common concurrency bug in Go. The race detector is a critical tool, but it doesn't catch all races. Adding a feature (stats) on top of a buggy foundation is a realistic task — you have to fix the bug first, then extend cleanly. This mirrors the workflow of inheriting a codebase and improving it safely.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
-            <li><a href="https://pkg.go.dev/strings" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: strings</a></li>
-            <li><a href="https://pkg.go.dev/unicode/utf8" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: unicode/utf8</a></li>
+            <li><a href="https://pkg.go.dev/sync#RWMutex" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.RWMutex</a></li>
+            <li><a href="https://go.dev/doc/articles/race_detector" class="doc-link" target="_blank" rel="noopener">Go Doc: Race Detector</a></li>
           </ul>
         </div>
       </div>
@@ -363,34 +332,25 @@ Overlapping(Interval{"q", time(2), time(4)})
     <!-- Question 6 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">6. Implement a MergeIterator over sorted iterators.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">6. Add graceful shutdown and flush to a batcher.</h3>
+        <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>You have N sorted iterators (e.g., from database shards or log files). Implement a merge iterator that yields all elements in sorted order. The iterator should be lazy — it shouldn't materialize the entire result set. Each source iterator provides <code>Next()</code> and <code>Peek()</code> methods.</p>
+        <p>This batch processor accumulates items and flushes them periodically. It has a bug: when <code>Stop()</code> is called, any remaining items are lost because the goroutine exits immediately without flushing. Fix the bug and add a <code>Flush()</code> method.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q06-merge-iterator/merge.go">
+        <div class="code-block-wrapper" data-template="projects/q06-extend-batcher/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q06-merge-iterator/merge.go" data-problem="q6" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q06-extend-batcher/main.go" data-problem="q6" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
-        </div>
-
-        <div class="test-box">
-          <h4>Test Scenario</h4>
-          <pre>iter1: [1, 3, 5]
-iter2: [2, 4, 6]
-iter3: [0, 7]
-
-merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q6"></div>
@@ -402,25 +362,25 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
 
         <div id="q6-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>A min-heap of size N is the natural structure. Each heap element stores the current value and a reference to the source iterator. On <code>Next()</code>, pop the smallest, advance its iterator, and push the new value back.</p>
+          <p>When <code>stop</code> is closed, the goroutine should do a final flush before returning. For <code>Flush()</code>, you need a way to signal the loop from outside. A second channel or a condition variable works. Make sure the final flush and the loop don't double-flush the same items.</p>
         </div>
         <div id="q6-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What if the iterators are not sorted? How would you detect this?</li>
-            <li>How would you handle duplicate removal across sources?</li>
-            <li>What if the sources are remote (network latency)? How would you prefetch?</li>
+            <li>How would you use <code>context.Context</code> to replace the stop channel?</li>
+            <li>What if <code>flushFn</code> is slow? How do you prevent blocking callers of <code>Add</code>?</li>
+            <li>How would you add a max batch size so it flushes early when the batch is full?</li>
           </ul>
         </div>
         <div id="q6-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Merge iteration is the core of database query execution, log aggregation, and map-reduce shuffles. The lazy requirement is crucial for production — you can't materialize a billion rows. The network prefetch follow-up is a real distributed systems concern.</p>
+          <p>Graceful shutdown is a production requirement for any background worker. Losing data on shutdown is a common bug because developers often test the happy path but not the shutdown path. The <code>Flush()</code> addition is a realistic extension request — adding features to existing code without breaking the current behavior.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/container/heap" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/heap</a></li>
-            <li><a href="https://pkg.go.dev/io" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: io</a></li>
+            <li><a href="https://pkg.go.dev/context" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: context</a></li>
+            <li><a href="https://go.dev/blog/pipelines" class="doc-link" target="_blank" rel="noopener">Go Blog: Pipelines and Cancellation</a></li>
           </ul>
         </div>
       </div>
@@ -429,20 +389,20 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
     <!-- Question 7 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">7. Implement an LRU cache with O(1) operations.</h3>
-        <span class="level-badge level-senior">Senior</span>
+        <h3 class="question-title">7. Debug broken cursor pagination encoding.</h3>
+        <span class="level-badge level-staff">Staff</span>
       </div>
       <div class="question-body">
-        <p>Build an in-memory LRU cache supporting <code>Get</code>, <code>Set</code>, and <code>Delete</code> with O(1) average time complexity. It must be safe for concurrent access. Include a max size and eviction policy (LRU).</p>
+        <p>This REST API handler uses cursor-based pagination. The cursor encodes a timestamp and an ID. The bug is subtle: <code>json.Marshal</code> for an <code>int64</code> timestamp is parsed as <code>float64</code> by default, which loses precision for large values (anything above 2^53). This causes pagination to return wrong results or loop forever.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q07-lru-cache/lru.go">
+        <div class="code-block-wrapper" data-template="projects/q07-debug-cursor/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q07-lru-cache/lru.go" data-problem="q7" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q07-debug-cursor/main.go" data-problem="q7" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
@@ -459,26 +419,26 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
 
         <div id="q7-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Combine a hash map (for O(1) lookup) with a doubly linked list (for O(1) LRU tracking). The standard library's <code>container/list</code> works well. Protect with a <code>sync.RWMutex</code> or <code>sync.Mutex</code>.</p>
+          <p>JSON numbers are parsed as <code>float64</code> by <code>encoding/json</code>. The maximum safe integer in float64 is 2^53 (≈9 quadrillion). <code>time.Now().UnixNano()</code> is around 1.7 quintillion, well above the limit. Use a custom binary encoding (e.g., <code>encoding/binary</code> or <code>fmt.Sprintf</code> with base64) instead of JSON.</p>
         </div>
         <div id="q7-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you add a TTL (time-to-live) per entry?</li>
-            <li>What if you want to support approximate LRU (e.g., for very high throughput)?</li>
-            <li>How would you persist this cache to disk on shutdown and restore on startup?</li>
+            <li>Why does <code>encoding/json</code> use <code>float64</code> for numbers? Could you force it to use <code>json.Number</code>?</li>
+            <li>How would you encode the cursor if it had more fields (e.g., sort order, filters)?</li>
+            <li>Should cursors be signed or encrypted? Discuss the security implications.</li>
           </ul>
         </div>
         <div id="q7-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>LRU is the most common caching interview question for a reason — it's a realistic combination of data structures and concurrency. The TTL follow-up is a real production requirement. The approximate LRU follow-up references Redis's volatile-lru and allkeys-lru eviction policies.</p>
+          <p>Cursor pagination is the standard for high-performance APIs. The precision bug is a classic because it only manifests with large timestamps — it might work fine in development and fail in production. Understanding JSON number precision is a staff-level expectation. The security follow-up about signing cursors is a real concern for public APIs.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
-            <li><a href="https://pkg.go.dev/sync" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync</a></li>
-            <li><a href="https://redis.io/docs/reference/eviction-policies/" class="doc-link" target="_blank" rel="noopener">Redis: Eviction Policies</a></li>
+            <li><a href="https://pkg.go.dev/encoding/json" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: encoding/json</a></li>
+            <li><a href="https://pkg.go.dev/encoding/binary" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: encoding/binary</a></li>
+            <li><a href="https://developer.twitter.com/en/docs/twitter-api/v1/pagination" class="doc-link" target="_blank" rel="noopener">Twitter API: Pagination</a></li>
           </ul>
         </div>
       </div>
@@ -487,36 +447,25 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
     <!-- Question 8 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">8. Implement a diff algorithm for two sorted slices.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">8. Add validation and safe logging to config.</h3>
+        <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>Given two sorted slices of strings (e.g., old and new lists of user IDs), compute the difference: elements only in A, elements only in B, and elements in both. Optimize for minimal allocations and single-pass where possible.</p>
+        <p>This service loads configuration but has no validation. Invalid configs cause runtime panics or obscure errors. The <code>String()</code> method is also missing, making it easy to accidentally log secrets.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q08-diff/diff.go">
+        <div class="code-block-wrapper" data-template="projects/q08-extend-config/main.go">
           <div class="code-header">
-            <span class="code-label">Boilerplate</span>
+            <span class="code-label">Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q08-diff/diff.go" data-problem="q8" data-section="algorithms">
+            <button class="generate-btn" data-template="projects/q08-extend-config/main.go" data-problem="q8" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
-        </div>
-
-        <div class="test-box">
-          <h4>Test Data</h4>
-          <pre>a := []string{"a", "c", "d", "f"}
-b := []string{"b", "c", "e", "f"}
-
-// Expected:
-// Added:   ["b", "e"]
-// Removed: ["a", "d"]
-// Common:  ["c", "f"]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q8"></div>
@@ -528,25 +477,26 @@ b := []string{"b", "c", "e", "f"}
 
         <div id="q8-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Two-pointer technique. Walk both slices simultaneously. If a[i] < b[j], a[i] is removed. If a[i] > b[j], b[j] is added. If equal, it's common. This is O(N+M) time and O(1) extra space (excluding output).</p>
+          <p>Validation should fail fast with clear, actionable errors. For <code>String()</code>, use <code>fmt.Sprintf</code> but replace the password with a redaction string like <code>"[REDACTED]"</code>. Consider using <code>%q</code> for string formatting to handle special characters.</p>
         </div>
         <div id="q8-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What if the slices are not sorted? What's the best approach then?</li>
-            <li>How would you handle this if the slices are too large to fit in memory?</li>
-            <li>What if you need to stream the results instead of materializing them?</li>
+            <li>How would you use <code>go-validator</code> or similar libraries instead of hand-written validation?</li>
+            <li>What if the config has nested structs? How do you validate recursively?</li>
+            <li>How would you implement a <code>MarshalJSON</code> that also redacts the password?</li>
           </ul>
         </div>
         <div id="q8-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Diff is a core operation in reconciliation loops (e.g., Kubernetes controllers), database sync, and cache invalidation. The two-pointer approach is elegant and efficient. The streaming follow-up is a real concern for large datasets and shows systems thinking.</p>
+          <p>Config validation and safe logging are table stakes for production services. Invalid configs that crash at runtime are a common source of incidents. Logging secrets is a security vulnerability. This question tests whether you think about the operational and security aspects of code, not just the functional aspects.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/slices" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: slices (Go 1.21+)</a></li>
-            <li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+            <li><a href="https://pkg.go.dev/fmt" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: fmt</a></li>
+            <li><a href="https://pkg.go.dev/os" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: os</a></li>
+            <li><a href="https://go.dev/blog/errors-are-values" class="doc-link" target="_blank" rel="noopener">Go Blog: Errors are values</a></li>
           </ul>
         </div>
       </div>
@@ -554,7 +504,7 @@ b := []string{"b", "c", "e", "f"}
   </main>
 
   <footer class="site-footer">
-    <p><a href="systems-design.html" style="color: var(--accent-blue);">Next: Systems Design &rarr;</a></p>
+    <p><a href="index.html" style="color: var(--accent-blue);">&larr; Back to Home</a></p>
   </footer>
 </body>
 </html>

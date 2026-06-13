@@ -3,7 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        USER_ID: 1001
+        GROUP_ID: 1001
     container_name: go-interview-guide
+    user: "1001:1001"
     ports:
       - "8080:8080"
     volumes:
