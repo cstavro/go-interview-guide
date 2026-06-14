@@ -10,14 +10,8 @@ type Notifier interface {
 
 type Email struct{}
 
-func (e *Email) Send(to, msg string) error {
-	// TODO
-	return nil
-}
+// TODO: implement Notifier for Email
 
 type SMS struct{}
 
-func (s *SMS) Send(to, msg string) error {
-	// TODO
-	return nil
-}
+// TODO: implement Notifier for SMS
