@@ -16,6 +16,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="go-fundamentals.html">Go Fundamentals</a></li>
           <li><a href="concurrency.html">Concurrency</a></li>
+          <li><a href="data-structures.html">Data Structures</a></li>
           <li><a href="algorithms.html">Algorithms</a></li>
           <li><a href="systems-design.html">Systems Design</a></li>
           <li><a href="projects.html">Projects</a></li>
@@ -551,6 +552,258 @@ b := []string{"b", "c", "e", "f"}
         </div>
       </div>
     </div>
+    <!-- Question 9 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">9. Binary search in a sorted array.</h3>
+        <span class="level-badge level-junior">Junior</span>
+      </div>
+      <div class="question-body">
+        <p>Given a sorted array of integers and a target value, return the index of the target. If the target is not present, return -1.</p>
+
+        <div class="code-block-wrapper" data-template="algorithms/q09-binary-search/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="algorithms/q09-binary-search/main.go" data-problem="q9" data-section="algorithms">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>nums := []int{-1, 0, 3, 5, 9, 12}
+Search(nums, 9) // 4
+Search(nums, 2) // -1</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q9"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q9-hint">Hint</button>
+          <button class="toggle-btn" data-target="q9-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q9-context">Context</button>
+        </div>
+
+        <div id="q9-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Maintain left and right pointers and repeatedly cut the search space in half. Watch for infinite loops when updating pointers.</p>
+        </div>
+        <div id="q9-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What is the time and space complexity?</li>
+            <li>How would you find the first or last occurrence of a duplicate target?</li>
+            <li>Can you implement the lower-bound variant?</li>
+          </ul>
+        </div>
+        <div id="q9-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Binary search is far more versatile than finding elements. It underpins lower/upper bound queries, binary search on answers, and many optimization problems.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+<li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Question 10 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">10. Merge sort.</h3>
+        <span class="level-badge level-intermediate">Intermediate</span>
+      </div>
+      <div class="question-body">
+        <p>Implement merge sort: given a slice of integers, return a new sorted slice. Do not mutate the input slice.</p>
+
+        <div class="code-block-wrapper" data-template="algorithms/q10-merge-sort/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="algorithms/q10-merge-sort/main.go" data-problem="q10" data-section="algorithms">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>[]int{5, 2, 3, 1, 4} // [1, 2, 3, 4, 5]</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q10"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q10-hint">Hint</button>
+          <button class="toggle-btn" data-target="q10-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q10-context">Context</button>
+        </div>
+
+        <div id="q10-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Recursively split the slice in half, sort each half, and merge the sorted halves. The merge step uses two pointers.</p>
+        </div>
+        <div id="q10-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What is the time and space complexity?</li>
+            <li>How would you make it in-place?</li>
+            <li>When is merge sort preferable to quicksort?</li>
+          </ul>
+        </div>
+        <div id="q10-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Merge sort is stable and predictable, making it useful for external sorting and linked lists. It also teaches the divide-and-conquer pattern.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+<li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Question 11 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">11. Coin change.</h3>
+        <span class="level-badge level-intermediate">Intermediate</span>
+      </div>
+      <div class="question-body">
+        <p>You are given coins of different denominations and a total amount. Return the fewest number of coins needed to make up that amount. If impossible, return -1.</p>
+
+        <div class="code-block-wrapper" data-template="algorithms/q11-coin-change/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="algorithms/q11-coin-change/main.go" data-problem="q11" data-section="algorithms">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>coins = [1, 2, 5], amount = 11 // 3 (5 + 5 + 1)
+coins = [2], amount = 3          // -1</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q11"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q11-hint">Hint</button>
+          <button class="toggle-btn" data-target="q11-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q11-context">Context</button>
+        </div>
+
+        <div id="q11-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Use dynamic programming. dp[i] = minimum coins to make amount i. Transition: dp[i] = min(dp[i - coin] + 1) for each coin.</p>
+        </div>
+        <div id="q11-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What is the time and space complexity?</li>
+            <li>How would you reconstruct the actual coins used?</li>
+            <li>Can you optimize the space?</li>
+          </ul>
+        </div>
+        <div id="q11-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Dynamic programming is a core algorithmic technique. Coin change is a classic unbounded knapsack problem and a great way to discuss memoization and tabulation.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+<li><a href="https://pkg.go.dev/math" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: math</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Question 12 -->
+    <div class="question-card">
+      <div class="question-header">
+        <h3 class="question-title">12. N-Queens.</h3>
+        <span class="level-badge level-senior">Senior</span>
+      </div>
+      <div class="question-body">
+        <p>The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other. Return all distinct solutions.</p>
+
+        <div class="code-block-wrapper" data-template="algorithms/q12-n-queens/main.go">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="algorithms/q12-n-queens/main.go" data-problem="q12" data-section="algorithms">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>n = 4 // 2 solutions
+n = 1 // 1 solution</pre>
+        </div>
+
+        <div class="workspace-status" id="ws-q12"></div>
+        <div class="toggle-controls">
+          <button class="toggle-btn" data-target="q12-hint">Hint</button>
+          <button class="toggle-btn" data-target="q12-followup">Follow-up</button>
+          <button class="toggle-btn" data-target="q12-context">Context</button>
+        </div>
+
+        <div id="q12-hint" class="toggle-content hint-box">
+          <h4>Hint</h4>
+          <p>Use backtracking. Place one queen per row, and track occupied columns and diagonals. When you reach the last row, record the board.</p>
+        </div>
+        <div id="q12-followup" class="toggle-content followup-box">
+          <h4>Follow-up</h4>
+          <ul>
+            <li>What is the time complexity?</li>
+            <li>How would you count solutions without generating all boards?</li>
+            <li>Can bit manipulation speed it up?</li>
+          </ul>
+        </div>
+        <div id="q12-context" class="toggle-content context-box">
+          <h4>Context</h4>
+          <p>Backtracking problems test your ability to explore a state space methodically and prune invalid branches early. N-Queens is the canonical example.</p>
+        </div>
+        <div class="further-reading">
+          <h4>Further Reading</h4>
+          <ul>
+<li><a href="https://pkg.go.dev/strings" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: strings</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
   </main>
 
   <footer class="site-footer">

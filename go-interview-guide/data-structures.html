@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Concurrency - Interview Guide</title>
+  <title>Data Structures - Interview Guide</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -27,27 +27,27 @@
 
   <main class="container">
     <div class="section-header">
-      <h1>Concurrency</h1>
-      <p>Go's concurrency model is a core differentiator. At senior and staff levels, expect to reason about correctness, performance, and the memory model under pressure.</p>
+      <h1>Data Structures</h1>
+      <p>Core data structure questions covering arrays, strings, linked lists, stacks and queues, trees, graphs, maps, and heaps. These are baseline expectations across all engineering levels.</p>
     </div>
 
     <!-- Question 1 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">1. Implement a rate limiter using the token bucket algorithm.</h3>
-        <span class="level-badge level-senior">Senior</span>
+        <h3 class="question-title">1. Merge two sorted arrays.</h3>
+        <span class="level-badge level-junior">Junior</span>
       </div>
       <div class="question-body">
-        <p>Write a <code>TokenBucket</code> that allows bursts up to a maximum capacity but refills at a fixed rate. Provide <code>Allow()</code> and <code>AllowN(n int)</code> methods. Must be safe for concurrent use. Include a test that demonstrates a burst followed by throttling.</p>
+        <p>Given two sorted integer arrays, return a new sorted array containing all elements from both. Do not modify the input arrays.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q01-token-bucket/ratelimit.go">
+        <div class="code-block-wrapper" data-template="data-structures/q01-arrays/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q01-token-bucket/ratelimit.go" data-problem="q1" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q01-arrays/main.go" data-problem="q1" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
@@ -56,12 +56,10 @@
         </div>
 
         <div class="test-box">
-          <h4>Test Scenario</h4>
-          <pre>bucket := NewTokenBucket(5, 1*time.Second) // capacity 5, 1 token/sec
-fmt.Println(bucket.AllowN(5)) // true (burst)
-fmt.Println(bucket.Allow())   // false (throttled)
-// wait 1 second
-fmt.Println(bucket.Allow())   // true (refilled)</pre>
+          <h4>Test Data</h4>
+          <pre>a := []int{1, 3, 5}
+b := []int{2, 4, 6}
+// expected: [1, 2, 3, 4, 5, 6]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q1"></div>
@@ -73,52 +71,59 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q1-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Track the last time tokens were consumed and compute how many tokens should have refilled since then. Use a mutex or atomic operations. Lazy evaluation is your friend — you don't need a background goroutine.</p>
+          <p>Use a two-pointer merge similar to the merge step of merge sort. Pre-allocate the result slice with length len(a)+len(b).</p>
         </div>
         <div id="q1-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you implement a "Wait" variant that blocks until tokens are available?</li>
-            <li>What's the difference between token bucket and leaky bucket? When to use which?</li>
-            <li>How would you distribute this across a cluster of services?</li>
+            <li>What is the time and space complexity?</li>
+            <li>How would you handle arrays with duplicate values?</li>
+            <li>What if one array is much larger than the other?</li>
           </ul>
         </div>
         <div id="q1-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Rate limiting is a fundamental resilience pattern. The token bucket is preferred when you want to allow bursts. The lazy evaluation approach is a common interview optimization because it avoids background goroutines. Understanding the distributed version (e.g., Redis-based) shows staff-level thinking.</p>
+          <p>Merging sorted sequences is a fundamental building block of merge sort, external sorting, and stream merging. The two-pointer approach is expected at every level.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/golang.org/x/time/rate" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/time/rate</a></li>
-            <li><a href="https://go.dev/doc/effective_go#concurrency" class="doc-link" target="_blank" rel="noopener">Effective Go: Concurrency</a></li>
+<li><a href="https://pkg.go.dev/sort" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sort</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 2 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">2. Implement a worker pool with graceful shutdown.</h3>
-        <span class="level-badge level-senior">Senior</span>
+        <h3 class="question-title">2. Longest substring without repeating characters.</h3>
+        <span class="level-badge level-intermediate">Intermediate</span>
       </div>
       <div class="question-body">
-        <p>Build a worker pool that processes jobs from a channel. It must support <code>Start</code>, <code>Submit</code>, and <code>Stop</code> (graceful). On <code>Stop</code>, it should finish all in-flight jobs but reject new submissions. Use a <code>context.Context</code> for cancellation.</p>
+        <p>Given a string, find the length of the longest substring that contains no repeated characters.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q02-worker-pool/workerpool.go">
+        <div class="code-block-wrapper" data-template="data-structures/q02-strings/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q02-worker-pool/workerpool.go" data-problem="q2" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q02-strings/main.go" data-problem="q2" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>"abcabcbb" // 3 ("abc")
+"bbbbb"    // 1
+"pwwkew"   // 3 ("wke")</pre>
         </div>
 
         <div class="workspace-status" id="ws-q2"></div>
@@ -130,53 +135,59 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q2-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Use a jobs channel, a <code>sync.WaitGroup</code> for workers, and a separate channel or atomic flag to signal shutdown. The key is to close the jobs channel only after all submits are done, and to wait for workers to drain.</p>
+          <p>Use a sliding window and a map from character to its most recent index. Expand the right pointer and shrink the left when you see a duplicate inside the window.</p>
         </div>
         <div id="q2-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What happens if a job panics? How would you recover and continue?</li>
-            <li>How would you implement dynamic resizing (add/remove workers)?</li>
-            <li>Compare this to using <code>errgroup.Group</code> or <code>ants</code> library.</li>
+            <li>Can you solve it in O(n) time and O(min(n, m)) space, where m is the size of the character set?</li>
+            <li>How does your solution handle Unicode characters in Go?</li>
+            <li>What if the question asked for the actual substring instead of its length?</li>
           </ul>
         </div>
         <div id="q2-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Worker pools are a bread-and-butter concurrency pattern. The graceful shutdown requirement is what makes it interesting — it mirrors production concerns where you must drain connections before restart. The context integration is also a key Go idiom.</p>
+          <p>Sliding window problems appear constantly in string parsing, network protocols, and log analysis. This is a canonical baseline for any level.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/golang.org/x/sync/errgroup" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/sync/errgroup</a></li>
-            <li><a href="https://pkg.go.dev/golang.org/x/sync/semaphore" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/sync/semaphore</a></li>
-            <li><a href="https://pkg.go.dev/context" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: context</a></li>
+<li><a href="https://pkg.go.dev/strings" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: strings</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 3 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">3. Detect and fix the race condition in this cache.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">3. Merge two sorted linked lists.</h3>
+        <span class="level-badge level-junior">Junior</span>
       </div>
       <div class="question-body">
-        <p>This simple cache has a data race. Run it with <code>go run -race</code> to confirm. Fix it, then optimize for read-heavy workloads without over-complicating the code.</p>
+        <p>Merge two sorted singly linked lists into a single sorted linked list. Return the head of the merged list.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q03-race-cache/main.go">
+        <div class="code-block-wrapper" data-template="data-structures/q03-linked-lists/main.go">
           <div class="code-header">
-            <span class="code-label">Buggy Code</span>
+            <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q03-race-cache/main.go" data-problem="q3" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q03-linked-lists/main.go" data-problem="q3" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>list1: 1 -> 2 -> 4
+list2: 1 -> 3 -> 4
+// expected: 1 -> 1 -> 2 -> 3 -> 4 -> 4</pre>
         </div>
 
         <div class="workspace-status" id="ws-q3"></div>
@@ -188,53 +199,60 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q3-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>A <code>sync.RWMutex</code> is the standard fix. But there's a more subtle issue: if you return the value directly from the map, callers could mutate it. Consider if the values are pointers or slices.</p>
+          <p>Use a dummy head and compare node values one at a time. Attach the smaller node and advance its pointer.</p>
         </div>
         <div id="q3-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>Implement the same cache using <code>sync.Map</code>. What are the trade-offs?</li>
-            <li>How would you add expiration with TTL without a background goroutine?</li>
-            <li>At what point would you switch to a dedicated cache library?</li>
+            <li>Can you do this iteratively and recursively? What are the trade-offs?</li>
+            <li>How would you merge k sorted lists instead of two?</li>
+            <li>What if the lists are not sorted?</li>
           </ul>
         </div>
         <div id="q3-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Data races are the most common class of concurrency bug in Go. The race detector is a critical tool, but it doesn't catch all races. Understanding the difference between a mutex and RWMutex, and when to use each, is table stakes for senior engineers. The TTL follow-up is a classic pattern.</p>
+          <p>Linked lists are less common in Go than slices, but pointer manipulation questions still show up. They test your ability to reason about references and avoid losing nodes.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/sync#RWMutex" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.RWMutex</a></li>
-            <li><a href="https://pkg.go.dev/sync#Map" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.Map</a></li>
-            <li><a href="https://go.dev/doc/articles/race_detector" class="doc-link" target="_blank" rel="noopener">Go Doc: Race Detector</a></li>
+<li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 4 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">4. Implement a timeout pattern for a function that calls multiple services.</h3>
-        <span class="level-badge level-senior">Senior</span>
+        <h3 class="question-title">4. Valid parentheses.</h3>
+        <span class="level-badge level-junior">Junior</span>
       </div>
       <div class="question-body">
-        <p>You need to call three services (A, B, C) concurrently. The overall operation must complete within 500ms. If any service fails or times out, return an error immediately. Do not leak goroutines. Include the code to call the services and the orchestration logic.</p>
+        <p>Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if brackets are closed in the correct order.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q04-timeout-pattern/main.go">
+        <div class="code-block-wrapper" data-template="data-structures/q04-stacks-queues/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q04-timeout-pattern/main.go" data-problem="q4" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q04-stacks-queues/main.go" data-problem="q4" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>"()"      // true
+"()[]{}" // true
+"(]"     // false
+"{[]}"   // true</pre>
         </div>
 
         <div class="workspace-status" id="ws-q4"></div>
@@ -246,53 +264,62 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q4-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Use <code>errgroup</code> or <code>sync.WaitGroup</code> with a <code>context.WithTimeout</code>. The key is to propagate the context and to cancel remaining goroutines when the first error occurs. If you use errgroup, it handles cancellation automatically.</p>
+          <p>Use a stack. Push opening brackets and pop to match closing brackets. The string is valid if the stack is empty at the end.</p>
         </div>
         <div id="q4-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What if you want partial results (return whatever succeeded, plus the errors)?</li>
-            <li>How would you implement retry with exponential backoff per service?</li>
-            <li>What if the services are streamed and you need to return the first successful result?</li>
+            <li>What is the time and space complexity?</li>
+            <li>How would you extend this to support multiple bracket types with different priorities?</li>
+            <li>Can you solve it without a stack?</li>
           </ul>
         </div>
         <div id="q4-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Context propagation and goroutine coordination are fundamental to Go backend services. The "no goroutine leaks" requirement is critical — in production, leaking goroutines exhausts memory and causes OOMs. This is the kind of pattern you'll use dozens of times in real systems.</p>
+          <p>Stack-based validation shows up in parsers, compilers, and expression evaluation. It is one of the most common baseline questions for junior and intermediate candidates.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/context" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: context</a></li>
-            <li><a href="https://pkg.go.dev/golang.org/x/sync/errgroup" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/sync/errgroup</a></li>
-            <li><a href="https://go.dev/blog/pipelines" class="doc-link" target="_blank" rel="noopener">Go Blog: Pipelines and Cancellation</a></li>
+<li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 5 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">5. Explain and implement a fan-out / fan-in pattern.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">5. Maximum depth of a binary tree.</h3>
+        <span class="level-badge level-intermediate">Intermediate</span>
       </div>
       <div class="question-body">
-        <p>Given a channel of input jobs, distribute them to N workers, collect results, and return a single channel. Ensure proper shutdown when input is exhausted. The output order does not need to match input order.</p>
+        <p>Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root down to the farthest leaf.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q05-fan-out-fan-in/main.go">
+        <div class="code-block-wrapper" data-template="data-structures/q05-trees/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q05-fan-out-fan-in/main.go" data-problem="q5" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q05-trees/main.go" data-problem="q5" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>    3
+   / \
+  9  20
+    /  \
+   15   7
+// depth: 3</pre>
         </div>
 
         <div class="workspace-status" id="ws-q5"></div>
@@ -304,52 +331,59 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q5-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Use a <code>sync.WaitGroup</code> to wait for all workers to finish, then close the results channel. The main goroutine should range over results until it's closed. Separate the input channel lifecycle from the output channel lifecycle.</p>
+          <p>Recursively compute the depth of each subtree. The answer is 1 + max(depth(left), depth(right)).</p>
         </div>
         <div id="q5-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you preserve input order in the output?</li>
-            <li>What if you want to limit the number of in-flight jobs (backpressure)?</li>
-            <li>How would you propagate errors from workers back to the main goroutine?</li>
+            <li>Implement both recursive and iterative (BFS/DFS stack) solutions.</li>
+            <li>What is the time and space complexity of each?</li>
+            <li>How would you validate that the tree is balanced while computing depth?</li>
           </ul>
         </div>
         <div id="q5-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Fan-out/fan-in is the bread and butter of pipeline parallelism. The order-preserving follow-up is a common production requirement. The error propagation follow-up is where it gets interesting — most real pipelines need to handle partial failures, and the naive channel pattern doesn't handle that well.</p>
+          <p>Tree traversal is fundamental to parsing, DOM traversal, and hierarchical data. Depth calculation is a gentle introduction to recursion and tree walking.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://go.dev/blog/pipelines" class="doc-link" target="_blank" rel="noopener">Go Blog: Pipelines and Cancellation</a></li>
-            <li><a href="https://pkg.go.dev/sync#WaitGroup" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.WaitGroup</a></li>
+<li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 6 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">6. Implement a semaphore using channels.</h3>
+        <h3 class="question-title">6. Course schedule II.</h3>
         <span class="level-badge level-senior">Senior</span>
       </div>
       <div class="question-body">
-        <p>A semaphore limits the number of concurrent operations. Implement one using only channels (no <code>sync</code> package). Provide <code>Acquire</code> and <code>Release</code> methods. Include a test that proves it limits concurrency to N.</p>
+        <p>There are a total of numCourses courses to take, labeled from 0 to numCourses-1. Some courses have prerequisites. Return a valid ordering of courses, or an empty result if it is impossible.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q06-semaphore/semaphore.go">
+        <div class="code-block-wrapper" data-template="data-structures/q06-graphs/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q06-semaphore/semaphore.go" data-problem="q6" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q06-graphs/main.go" data-problem="q6" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>numCourses = 4
+prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+// valid order: [0, 1, 2, 3]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q6"></div>
@@ -361,52 +395,58 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q6-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>A channel with buffer size N is the natural representation. Sending to the channel is Acquire, receiving is Release. Make sure to handle the case where Release is called more than Acquire.</p>
+          <p>Model the problem as a directed graph and use topological sorting. Kahn's algorithm (in-degree counting) or DFS with cycle detection both work.</p>
         </div>
         <div id="q6-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>What happens if you forget to call Release? How would you detect this?</li>
-            <li>Implement <code>AcquireContext</code> that supports cancellation.</li>
-            <li>When is a semaphore better than a worker pool? When is it worse?</li>
+            <li>How do you detect cycles?</li>
+            <li>What is the time and space complexity?</li>
+            <li>How would you return all valid orderings?</li>
           </ul>
         </div>
         <div id="q6-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Semaphores are a classic concurrency primitive. The channel-based implementation is a great interview question because it demonstrates that you understand channels as more than just message passing — they are synchronization primitives. The <code>AcquireContext</code> follow-up is a real-world requirement for any production system.</p>
+          <p>Topological sorting appears in task scheduling, build systems, and dependency resolution. Detecting cycles in a directed graph is a senior-level expectation.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/golang.org/x/sync/semaphore" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: golang.org/x/sync/semaphore</a></li>
-            <li><a href="https://go.dev/doc/effective_go#channels" class="doc-link" target="_blank" rel="noopener">Effective Go: Channels</a></li>
+<li><a href="https://pkg.go.dev/container/list" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/list</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 7 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">7. What is the output of this program and why?</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">7. Two sum.</h3>
+        <span class="level-badge level-junior">Junior</span>
       </div>
       <div class="question-body">
-        <p>This program is a classic concurrency puzzle. Predict the output before running it, then explain why. The answer should reference the Go memory model.</p>
+        <p>Given an array of integers and a target value, return the indices of the two numbers that add up to target. You may assume each input has exactly one solution.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q07-memory-model/main.go">
+        <div class="code-block-wrapper" data-template="data-structures/q07-maps/main.go">
           <div class="code-header">
-            <span class="code-label">Puzzle</span>
+            <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q07-memory-model/main.go" data-problem="q7" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q07-maps/main.go" data-problem="q7" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>nums = [2, 7, 11, 15], target = 9
+// expected: [0, 1]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q7"></div>
@@ -418,53 +458,58 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q7-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Think about the Go memory model's happens-before relationship. Is there a happens-before edge between the write to <code>done</code> and the read in the main goroutine? What does the spec guarantee?</p>
+          <p>Use a hash map to store the value you need as you iterate: complement = target - current value.</p>
         </div>
         <div id="q7-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you fix this with a channel? Explain the happens-before guarantee.</li>
-            <li>How would you fix this with <code>sync/atomic</code>? What are the trade-offs?</li>
-            <li>What does Go 1.19+ guarantee about atomic operations and the memory model?</li>
+            <li>Can you solve it in one pass?</li>
+            <li>What if the array is sorted? Can you use the two-pointer technique?</li>
+            <li>How would you handle duplicates or multiple valid pairs?</li>
           </ul>
         </div>
         <div id="q7-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>This is the canonical Go concurrency puzzle, often attributed to Dmitry Vyukov. The correct answer is that there is no synchronization, so the behavior is undefined. This question separates people who know goroutines from people who understand the Go memory model. Staff engineers should be able to discuss why the memory model is designed this way and the historical evolution of atomic guarantees.</p>
+          <p>Hash maps are the go-to tool for O(1) lookups. Two sum is the classic introduction to trading space for time.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://go.dev/ref/mem" class="doc-link" target="_blank" rel="noopener">Go Memory Model</a></li>
-            <li><a href="https://pkg.go.dev/sync/atomic" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync/atomic</a></li>
-            <li><a href="https://go.dev/blog/atomic" class="doc-link" target="_blank" rel="noopener">Go Blog: Introducing the Go Race Detector</a></li>
+<li><a href="https://pkg.go.dev/maps" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: maps</a></li>
           </ul>
         </div>
       </div>
     </div>
 
+
     <!-- Question 8 -->
     <div class="question-card">
       <div class="question-header">
-        <h3 class="question-title">8. Implement a pub/sub system with topic filtering.</h3>
-        <span class="level-badge level-staff">Staff</span>
+        <h3 class="question-title">8. Top K frequent elements.</h3>
+        <span class="level-badge level-intermediate">Intermediate</span>
       </div>
       <div class="question-body">
-        <p>Build a pub/sub system where subscribers can subscribe to topics with wildcards (e.g., <code>orders.*</code> matches <code>orders.created</code> and <code>orders.updated</code>). Support concurrent publishers and subscribers. Subscribers receive messages via a channel. Ensure slow subscribers don't block fast publishers.</p>
+        <p>Given an integer array and an integer k, return the k most frequent elements. The order of the result does not matter.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q08-pub-sub/pubsub.go">
+        <div class="code-block-wrapper" data-template="data-structures/q08-heaps/main.go">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q08-pub-sub/pubsub.go" data-problem="q8" data-section="concurrency">
+            <button class="generate-btn" data-template="data-structures/q08-heaps/main.go" data-problem="q8" data-section="data-structures">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
           <pre><code class="template-content">Loading...</code></pre>
+        </div>
+
+        <div class="test-box">
+          <h4>Test Data</h4>
+          <pre>nums = [1,1,1,2,2,3], k = 2
+// expected: [1, 2]</pre>
         </div>
 
         <div class="workspace-status" id="ws-q8"></div>
@@ -476,30 +521,29 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
 
         <div id="q8-hint" class="toggle-content hint-box">
           <h4>Hint</h4>
-          <p>Store subscribers in a map protected by a mutex. Each subscriber gets a buffered channel. Use a simple glob match (e.g., split by <code>.</code> and compare segments). For non-blocking sends, use a select with a default case to drop messages for slow subscribers.</p>
+          <p>Count frequencies with a map, then use a min-heap of size k or bucket sort by frequency. In Go, container/heap is the standard tool for the heap approach.</p>
         </div>
         <div id="q8-followup" class="toggle-content followup-box">
           <h4>Follow-up</h4>
           <ul>
-            <li>How would you implement exactly-once delivery? Is it possible?</li>
-            <li>How would you add subscriber groups (only one subscriber in a group receives a message)?</li>
-            <li>What are the memory implications if subscribers never unsubscribe?</li>
+            <li>What are the time and space complexities of the heap and bucket-sort approaches?</li>
+            <li>How would you solve this for an unbounded stream?</li>
+            <li>What if you needed the elements sorted by frequency?</li>
           </ul>
         </div>
         <div id="q8-context" class="toggle-content context-box">
           <h4>Context</h4>
-          <p>Pub/sub is a foundational pattern in distributed systems. The wildcards and non-blocking requirements make this a realistic problem. The follow-ups about exactly-once delivery and subscriber groups are core concepts in systems like Kafka and NATS. Staff engineers should understand why exactly-once is fundamentally impossible in distributed systems without trade-offs.</p>
+          <p>Top-K problems are everywhere in analytics, APM, and log processing. Understanding both exact and approximate solutions is valuable at every level.</p>
         </div>
         <div class="further-reading">
           <h4>Further Reading</h4>
           <ul>
-            <li><a href="https://pkg.go.dev/sync#Map" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.Map</a></li>
-            <li><a href="https://pkg.go.dev/sync#RWMutex" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: sync.RWMutex</a></li>
-            <li><a href="https://go.dev/blog/intro-generics" class="doc-link" target="_blank" rel="noopener">Go Blog: An Introduction to Generics</a></li>
+<li><a href="https://pkg.go.dev/container/heap" class="doc-link" target="_blank" rel="noopener">pkg.go.dev: container/heap</a></li>
           </ul>
         </div>
       </div>
     </div>
+
   </main>
 
   <footer class="site-footer">

@@ -3,7 +3,8 @@
 const SECTION_TOTALS = {
   fundamentals: 8,
   concurrency: 8,
-  algorithms: 8,
+  'data-structures': 8,
+  algorithms: 12,
   'systems-design': 8,
   projects: 8
 };
@@ -255,7 +256,7 @@ function initIndexProgress() {
     const started = counts[section] || 0;
     const meta = card.querySelector('.card-meta');
     if (meta) {
-      meta.textContent = meta.textContent.replace(/· Senior & Staff/, `· ${started}/${total} started · Senior & Staff`);
+      meta.textContent = meta.textContent.replace(/· (Senior & Staff|All Levels|Junior to Staff)/, `· ${started}/${total} started · $1`);
     }
   });
 }
