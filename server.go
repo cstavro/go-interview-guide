@@ -18,6 +18,9 @@ func main() {
 	// API endpoint to generate workspace from template
 	http.HandleFunc("/api/generate", handleGenerate)
 
+	// API endpoint to list existing workspace directories
+	http.HandleFunc("/api/workspaces", handleWorkspaces)
+
 	// API endpoint to serve template content
 	http.HandleFunc("/api/template", handleTemplate)
 
@@ -88,6 +91,33 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 	resp := generateResponse{Path: workspaceDir, Exists: exists, Created: true}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
+}
+
+func handleWorkspaces(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var dirs []string
+	entries, err := os.ReadDir("workspaces")
+	if err != nil {
+		if os.IsNotExist(err) {
+			dirs = []string{}
+		} else {
+			http.Error(w, "Failed to read workspaces: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		for _, entry := range entries {
+			if entry.IsDir() {
+				dirs = append(dirs, entry.Name())
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(dirs)
 }
 
 func copyDir(src, dst string) error {

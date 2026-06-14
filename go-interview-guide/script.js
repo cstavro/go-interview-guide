@@ -1,11 +1,23 @@
 // Go Interview Guide - Shared Scripts
 
+const SECTION_TOTALS = {
+  fundamentals: 8,
+  concurrency: 8,
+  algorithms: 8,
+  'systems-design': 8,
+  projects: 8
+};
+
+let workspaceKeys = new Set();
+let collapsedKeys = new Set();
+
 document.addEventListener('DOMContentLoaded', function() {
   initCopyButtons();
   initToggleButtons();
   initActiveNav();
   initTemplateLoading();
   initGenerateButtons();
+  initWorkspaceState();
 });
 
 // Copy buttons
@@ -115,6 +127,139 @@ function initGenerateButtons() {
   });
 }
 
+async function initWorkspaceState() {
+  try {
+    const res = await fetch('/api/workspaces');
+    if (!res.ok) throw new Error('Failed to load workspaces');
+    const keys = await res.json();
+    workspaceKeys = new Set(keys);
+  } catch (err) {
+    workspaceKeys = new Set();
+  }
+
+  renderWorkspaceBadges();
+  initCollapseButton();
+  initHeaderToggle();
+  initIndexProgress();
+}
+
+function renderWorkspaceBadges() {
+  document.querySelectorAll('.question-card').forEach(card => {
+    const btn = card.querySelector('.generate-btn');
+    if (!btn) return;
+
+    const section = btn.getAttribute('data-section');
+    const problem = btn.getAttribute('data-problem');
+    const key = section + '-' + problem;
+    card.setAttribute('data-workspace-key', key);
+
+    if (workspaceKeys.has(key)) {
+      markWorkspaceExists(card);
+    }
+  });
+}
+
+function markWorkspaceExists(card) {
+  card.classList.add('has-workspace');
+  const header = card.querySelector('.question-header');
+  if (header && !header.querySelector('.workspace-indicator')) {
+    const indicator = document.createElement('span');
+    indicator.className = 'workspace-indicator';
+    indicator.textContent = 'Workspace';
+    header.appendChild(indicator);
+  }
+}
+
+function initHeaderToggle() {
+  document.addEventListener('click', function(e) {
+    const header = e.target.closest('.question-card.has-workspace .question-header');
+    if (!header) return;
+    const card = header.closest('.question-card');
+    if (!card) return;
+
+    if (card.classList.contains('collapsed')) {
+      expandCard(card);
+    } else {
+      collapseCard(card);
+    }
+  });
+}
+
+function collapseCard(card) {
+  const key = card.getAttribute('data-workspace-key');
+  if (key) collapsedKeys.add(key);
+  card.classList.add('collapsed');
+  updateCollapseButtonText();
+}
+
+function initCollapseButton() {
+  const sectionHeader = document.querySelector('.section-header');
+  if (!sectionHeader || sectionHeader.querySelector('.collapse-btn')) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'collapse-btn';
+  btn.textContent = 'Collapse all with workspaces';
+  btn.addEventListener('click', toggleCollapseAll);
+  sectionHeader.appendChild(btn);
+}
+
+function toggleCollapseAll() {
+  const btn = document.querySelector('.section-header .collapse-btn');
+  if (!btn) return;
+
+  if (collapsedKeys.size === 0) {
+    document.querySelectorAll('.question-card.has-workspace').forEach(card => {
+      const key = card.getAttribute('data-workspace-key');
+      if (!key) return;
+      collapsedKeys.add(key);
+      card.classList.add('collapsed');
+    });
+    btn.textContent = 'Expand all';
+  } else {
+    collapsedKeys.clear();
+    document.querySelectorAll('.question-card.collapsed').forEach(card => {
+      card.classList.remove('collapsed');
+    });
+    btn.textContent = 'Collapse all with workspaces';
+  }
+}
+
+function expandCard(card) {
+  const key = card.getAttribute('data-workspace-key');
+  if (key) collapsedKeys.delete(key);
+  card.classList.remove('collapsed');
+  updateCollapseButtonText();
+}
+
+function updateCollapseButtonText() {
+  const btn = document.querySelector('.section-header .collapse-btn');
+  if (!btn) return;
+  btn.textContent = collapsedKeys.size > 0 ? 'Expand all' : 'Collapse all with workspaces';
+}
+
+function initIndexProgress() {
+  const cards = document.querySelectorAll('.card-grid .card');
+  if (cards.length === 0) return;
+
+  const counts = {};
+  workspaceKeys.forEach(key => {
+    const lastHyphen = key.lastIndexOf('-');
+    const section = lastHyphen > 0 ? key.slice(0, lastHyphen) : key;
+    counts[section] = (counts[section] || 0) + 1;
+  });
+
+  cards.forEach(card => {
+    const section = card.getAttribute('data-section');
+    if (!section) return;
+    const total = SECTION_TOTALS[section] || 0;
+    const started = counts[section] || 0;
+    const meta = card.querySelector('.card-meta');
+    if (meta) {
+      meta.textContent = meta.textContent.replace(/· Senior & Staff/, `· ${started}/${total} started · Senior & Staff`);
+    }
+  });
+}
+
 function generateWorkspace(template, section, problem, overwrite, statusEl) {
   if (statusEl) {
     statusEl.textContent = 'Generating...';
@@ -128,6 +273,9 @@ function generateWorkspace(template, section, problem, overwrite, statusEl) {
   })
     .then(r => r.json())
     .then(data => {
+      const key = section + '-' + problem;
+      const card = statusEl ? statusEl.closest('.question-card') : null;
+
       if (data.exists && !data.created) {
         // Ask for overwrite confirmation
         showOverwriteModal(template, section, problem, statusEl);
@@ -140,6 +288,12 @@ function generateWorkspace(template, section, problem, overwrite, statusEl) {
           statusEl.innerHTML = 'Workspace created at <code>' + data.path + '</code>';
           statusEl.className = 'workspace-status created';
         }
+      }
+
+      if (card) {
+        workspaceKeys.add(key);
+        card.setAttribute('data-workspace-key', key);
+        markWorkspaceExists(card);
       }
     })
     .catch(err => {

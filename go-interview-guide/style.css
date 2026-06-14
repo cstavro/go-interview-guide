@@ -89,17 +89,25 @@ body {
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 .section-header h1 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
+  flex-basis: 100%;
 }
 .section-header p {
   color: var(--text-secondary);
   font-size: 1.1rem;
   max-width: 700px;
+  flex: 1 1 0;
+  min-width: 200px;
 }
 
 /* Hero */
@@ -469,4 +477,53 @@ code {
 }
 .further-reading li {
   margin-bottom: 0.35rem;
+}
+
+/* Workspace indicator badge */
+.workspace-indicator {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  background-color: rgba(63, 185, 80, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+}
+
+/* Collapse button */
+.collapse-btn {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans);
+  flex-shrink: 0;
+}
+.collapse-btn:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+/* Collapsed question cards */
+.question-card.collapsed .question-body {
+  display: none;
+}
+.question-card.collapsed {
+  opacity: 0.85;
+}
+.question-card.collapsed .question-header {
+  cursor: pointer;
+  padding-bottom: 1.5rem;
+}
+.question-card.collapsed .question-header:hover {
+  opacity: 1;
 }

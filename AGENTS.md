@@ -9,7 +9,8 @@
 
 ## Architecture
 
-- **server.go** — single-file Go HTTP server (stdlib only). Three routes: `/` (static files), `/api/template`, `/api/generate`.
+- **server.go** — single-file Go HTTP server (stdlib only). Routes: `/` (static files), `/api/template`, `/api/generate`, `/api/workspaces`.
+- Existing workspace directories are surfaced in the UI via `/api/workspaces` as a green "Workspace" badge on each question, a per-section "Collapse all with workspaces" button, and started/total counts on the home page category cards.
 - **go-interview-guide/** — vanilla HTML/CSS/JS frontend, no build step, no dependencies.
 - **templates/** — 32 problem boilerplate dirs across 4 categories: `fundamentals/`, `concurrency/`, `algorithms/`, `systems-design/`.
 - **workspaces/** — gitignored; generated at runtime by `/api/generate` copying a template dir.
