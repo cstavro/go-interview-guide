@@ -5,7 +5,9 @@ import (
 	"fmt"
 )
 
-// TODO: define a struct that can distinguish between missing, null, and present fields.
+// Person is intentionally empty. The candidate must add fields
+// to distinguish between missing, null, and present values.
+type Person struct{}
 
 func main() {
 	// Case 1: "age" is present and set to 30

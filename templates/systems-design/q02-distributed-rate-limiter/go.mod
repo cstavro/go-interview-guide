@@ -1,3 +1,3 @@
 module distributed-rate-limiter
 
-go 1.22
+go 1.26.4
