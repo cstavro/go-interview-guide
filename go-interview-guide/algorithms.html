@@ -40,19 +40,19 @@
       <div class="question-body">
         <p>Given a stream of requests (each with a user ID and timestamp), implement a function that checks if a request is allowed based on a sliding window limit: no more than N requests per user in the last M seconds. Optimize for memory and time.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q01-sliding-window/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q01-sliding-window">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q01-sliding-window/main.go" data-problem="q1" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q01-sliding-window" data-problem="q1" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -109,19 +109,19 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
       <div class="question-body">
         <p>Given a stream of strings (e.g., HTTP request paths), implement a data structure that can return the top K most frequent elements at any point. The stream is too large to store entirely. Optimize for memory and query speed.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q02-top-k/topk.go">
+        <div class="code-block-wrapper" data-template="algorithms/q02-top-k">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q02-top-k/topk.go" data-problem="q2" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q02-top-k" data-problem="q2" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q2"></div>
@@ -166,19 +166,19 @@ rl.Allow(user, time.Unix(70, 0)) // true (window slid, old request expired)</pre
       <div class="question-body">
         <p>Build a consistent hash ring for distributing keys across a set of nodes. Support adding and removing nodes with minimal key movement. Include virtual nodes to improve distribution uniformity. Provide a function to get the node for a given key.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q03-consistent-hash/hashring.go">
+        <div class="code-block-wrapper" data-template="algorithms/q03-consistent-hash">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q03-consistent-hash/hashring.go" data-problem="q3" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q03-consistent-hash" data-problem="q3" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -234,19 +234,19 @@ ring.RemoveNode("node-b")
       <div class="question-body">
         <p>You have a set of time intervals representing scheduled maintenance windows. Implement a data structure that can efficiently find all intervals that overlap with a given query interval. Support insertion and deletion.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q04-interval-tree/interval.go">
+        <div class="code-block-wrapper" data-template="algorithms/q04-interval-tree">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q04-interval-tree/interval.go" data-problem="q4" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q04-interval-tree" data-problem="q4" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -302,19 +302,19 @@ Overlapping(Interval{"q", time(2), time(4)})
       <div class="question-body">
         <p>Given a slice of strings, find the longest common prefix. This is useful for path matching, auto-complete, and routing. Optimize for the case where most strings share a long prefix. Handle edge cases (empty slice, empty strings).</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q05-longest-prefix/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q05-longest-prefix">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q05-longest-prefix/main.go" data-problem="q5" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q05-longest-prefix" data-problem="q5" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -370,19 +370,19 @@ Overlapping(Interval{"q", time(2), time(4)})
       <div class="question-body">
         <p>You have N sorted iterators (e.g., from database shards or log files). Implement a merge iterator that yields all elements in sorted order. The iterator should be lazy — it shouldn't materialize the entire result set. Each source iterator provides <code>Next()</code> and <code>Peek()</code> methods.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q06-merge-iterator/merge.go">
+        <div class="code-block-wrapper" data-template="algorithms/q06-merge-iterator">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q06-merge-iterator/merge.go" data-problem="q6" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q06-merge-iterator" data-problem="q6" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -436,19 +436,19 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
       <div class="question-body">
         <p>Build an in-memory LRU cache supporting <code>Get</code>, <code>Set</code>, and <code>Delete</code> with O(1) average time complexity. It must be safe for concurrent access. Include a max size and eviction policy (LRU).</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q07-lru-cache/lru.go">
+        <div class="code-block-wrapper" data-template="algorithms/q07-lru-cache">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q07-lru-cache/lru.go" data-problem="q7" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q07-lru-cache" data-problem="q7" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q7"></div>
@@ -494,19 +494,19 @@ merged: [0, 1, 2, 3, 4, 5, 6, 7]</pre>
       <div class="question-body">
         <p>Given two sorted slices of strings (e.g., old and new lists of user IDs), compute the difference: elements only in A, elements only in B, and elements in both. Optimize for minimal allocations and single-pass where possible.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q08-diff/diff.go">
+        <div class="code-block-wrapper" data-template="algorithms/q08-diff">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q08-diff/diff.go" data-problem="q8" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q08-diff" data-problem="q8" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -561,19 +561,19 @@ b := []string{"b", "c", "e", "f"}
       <div class="question-body">
         <p>Given a sorted array of integers and a target value, return the index of the target. If the target is not present, return -1.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q09-binary-search/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q09-binary-search">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q09-binary-search/main.go" data-problem="q9" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q09-binary-search" data-problem="q9" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -625,19 +625,19 @@ Search(nums, 2) // -1</pre>
       <div class="question-body">
         <p>Implement merge sort: given a slice of integers, return a new sorted slice. Do not mutate the input slice.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q10-merge-sort/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q10-merge-sort">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q10-merge-sort/main.go" data-problem="q10" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q10-merge-sort" data-problem="q10" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -687,19 +687,19 @@ Search(nums, 2) // -1</pre>
       <div class="question-body">
         <p>You are given coins of different denominations and a total amount. Return the fewest number of coins needed to make up that amount. If impossible, return -1.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q11-coin-change/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q11-coin-change">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q11-coin-change/main.go" data-problem="q11" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q11-coin-change" data-problem="q11" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -750,19 +750,19 @@ coins = [2], amount = 3          // -1</pre>
       <div class="question-body">
         <p>The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other. Return all distinct solutions.</p>
 
-        <div class="code-block-wrapper" data-template="algorithms/q12-n-queens/main.go">
+        <div class="code-block-wrapper" data-template="algorithms/q12-n-queens">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="algorithms/q12-n-queens/main.go" data-problem="q12" data-section="algorithms">
+            <button class="generate-btn" data-template="algorithms/q12-n-queens" data-problem="q12" data-section="algorithms">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">

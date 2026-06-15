@@ -26,8 +26,8 @@ function initCopyButtons() {
   document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', async function() {
       const wrapper = this.closest('.code-block-wrapper');
-      const code = wrapper.querySelector('pre');
-      const text = code.textContent;
+      const activePane = wrapper.querySelector('.tab-pane.active');
+      const text = activePane ? activePane.textContent : '';
       try {
         await navigator.clipboard.writeText(text);
         const originalText = this.innerHTML;
@@ -92,26 +92,70 @@ function initActiveNav() {
   });
 }
 
-// Template loading: fetch code content from server
+// Template loading: fetch all template files and render them as tabs
 function initTemplateLoading() {
   document.querySelectorAll('.code-block-wrapper[data-template]').forEach(wrapper => {
-    const templatePath = wrapper.getAttribute('data-template');
-    const codeEl = wrapper.querySelector('.template-content');
-    if (!codeEl || !templatePath) return;
+    const templateDir = wrapper.getAttribute('data-template');
+    const contentEl = wrapper.querySelector('.template-content');
+    if (!contentEl || !templateDir) return;
 
-    fetch('/api/template?path=' + encodeURIComponent(templatePath))
+    fetch('/api/template-dir?dir=' + encodeURIComponent(templateDir))
       .then(r => {
-        if (!r.ok) throw new Error('Failed to load template');
-        return r.text();
+        if (!r.ok) throw new Error('Failed to load template directory');
+        return r.json();
       })
-      .then(text => {
-        codeEl.textContent = text;
-        codeEl.classList.remove('template-content');
+      .then(data => {
+        renderTemplateTabs(wrapper, data.files || []);
       })
       .catch(err => {
-        codeEl.textContent = '// Error loading template: ' + err.message;
+        contentEl.textContent = '// Error loading template: ' + err.message;
       });
   });
+}
+
+function renderTemplateTabs(wrapper, files) {
+  const contentEl = wrapper.querySelector('.template-content');
+  if (!contentEl) return;
+
+  if (files.length === 0) {
+    contentEl.innerHTML = '<div class="no-template-files">No code files available for this question.</div>';
+    return;
+  }
+
+  const tabBar = document.createElement('div');
+  tabBar.className = 'tab-bar';
+
+  const panesContainer = document.createElement('div');
+  panesContainer.className = 'tab-panes';
+
+  files.forEach((file, index) => {
+    const isActive = index === 0;
+
+    const tab = document.createElement('button');
+    tab.className = 'tab-btn' + (isActive ? ' active' : '');
+    tab.textContent = file.name;
+    tab.setAttribute('data-filename', file.name);
+    tabBar.appendChild(tab);
+
+    const pane = document.createElement('pre');
+    pane.className = 'tab-pane' + (isActive ? ' active' : '');
+    pane.setAttribute('data-filename', file.name);
+    const code = document.createElement('code');
+    code.textContent = file.content;
+    pane.appendChild(code);
+    panesContainer.appendChild(pane);
+
+    tab.addEventListener('click', () => {
+      wrapper.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      wrapper.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      pane.classList.add('active');
+    });
+  });
+
+  contentEl.innerHTML = '';
+  contentEl.appendChild(tabBar);
+  contentEl.appendChild(panesContainer);
 }
 
 // Generate workspace buttons

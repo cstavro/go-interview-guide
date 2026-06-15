@@ -257,19 +257,19 @@
       <div class="question-body">
         <p>Implement a circuit breaker pattern for calling a downstream service. The breaker should open after N failures in a window, half-open after a timeout, and close after a successful probe. Provide the state machine, the metrics collection, and the Go code for a generic breaker.</p>
 
-        <div class="code-block-wrapper" data-template="systems-design/q06-circuit-breaker/breaker.go">
+        <div class="code-block-wrapper" data-template="systems-design/q06-circuit-breaker">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="systems-design/q06-circuit-breaker/breaker.go" data-problem="q6" data-section="systems-design">
+            <button class="generate-btn" data-template="systems-design/q06-circuit-breaker" data-problem="q6" data-section="systems-design">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q6"></div>
@@ -316,19 +316,19 @@
       <div class="question-body">
         <p>Your team runs 50 Go services. You need to collect logs, metrics, and traces with minimal overhead. Design the pipeline: instrumentation, collection, storage, and querying. Discuss: structured logging, metric cardinality, trace sampling, and alerting. Include code examples for the instrumentation layer.</p>
 
-        <div class="code-block-wrapper" data-template="systems-design/q07-observability/middleware.go">
+        <div class="code-block-wrapper" data-template="systems-design/q07-observability">
           <div class="code-header">
             <span class="code-label">Instrumentation Example</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="systems-design/q07-observability/middleware.go" data-problem="q7" data-section="systems-design">
+            <button class="generate-btn" data-template="systems-design/q07-observability" data-problem="q7" data-section="systems-design">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q7"></div>
@@ -375,19 +375,19 @@
       <div class="question-body">
         <p>You have a service that must run a background task on exactly one node at a time. Design a leader election mechanism. Discuss: split-brain prevention, network partition handling, graceful handoff, and liveness detection. Provide a Go sketch using a distributed lock (e.g., Redis Redlock, etcd, or Consul).</p>
 
-        <div class="code-block-wrapper" data-template="systems-design/q08-leader-election/leaderelection.go">
+        <div class="code-block-wrapper" data-template="systems-design/q08-leader-election">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="systems-design/q08-leader-election/leaderelection.go" data-problem="q8" data-section="systems-design">
+            <button class="generate-btn" data-template="systems-design/q08-leader-election" data-problem="q8" data-section="systems-design">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q8"></div>

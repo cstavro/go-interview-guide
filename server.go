@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -21,8 +22,11 @@ func main() {
 	// API endpoint to list existing workspace directories
 	http.HandleFunc("/api/workspaces", handleWorkspaces)
 
-	// API endpoint to serve template content
+	// API endpoint to serve a single template file
 	http.HandleFunc("/api/template", handleTemplate)
+
+	// API endpoint to serve all template files in a directory as tabs
+	http.HandleFunc("/api/template-dir", handleTemplateDir)
 
 	port := "8080"
 	fmt.Printf("Serving go-interview-guide on http://localhost:%s\n", port)
@@ -54,9 +58,23 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate template path (prevent directory traversal)
-	if strings.Contains(req.Template, "..") {
+	// Determine the source template directory. Modern clients send the directory
+	// path directly; for older clients that still send a file path, derive the
+	// directory from it.
+	templateDir := req.Template
+	if filepath.Ext(filepath.Base(templateDir)) != "" {
+		templateDir = filepath.Dir(templateDir)
+	}
+
+	fullTemplateDir, err := resolveTemplatePath(templateDir)
+	if err != nil {
 		http.Error(w, "Invalid template path", http.StatusBadRequest)
+		return
+	}
+
+	info, err := os.Stat(fullTemplateDir)
+	if err != nil || !info.IsDir() {
+		http.Error(w, "Template not found", http.StatusNotFound)
 		return
 	}
 
@@ -82,8 +100,7 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Copy template files
-	templateDir := filepath.Join("templates", filepath.Dir(req.Template))
-	if err := copyDir(templateDir, workspaceDir); err != nil {
+	if err := copyDir(fullTemplateDir, workspaceDir); err != nil {
 		http.Error(w, "Failed to copy template: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -168,13 +185,12 @@ func handleTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Prevent directory traversal
-	if strings.Contains(path, "..") {
+	fullPath, err := resolveTemplatePath(path)
+	if err != nil {
 		http.Error(w, "Invalid path", http.StatusBadRequest)
 		return
 	}
 
-	fullPath := filepath.Join("templates", path)
 	content, err := os.ReadFile(fullPath)
 	if err != nil {
 		http.Error(w, "Template not found", http.StatusNotFound)
@@ -183,4 +199,119 @@ func handleTemplate(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 	w.Write(content)
+}
+
+type templateFile struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
+type templateDirResponse struct {
+	Files []templateFile `json:"files"`
+}
+
+func handleTemplateDir(w http.ResponseWriter, r *http.Request) {
+	dir := r.URL.Query().Get("dir")
+	if dir == "" {
+		http.Error(w, "Missing dir parameter", http.StatusBadRequest)
+		return
+	}
+
+	fullPath, err := resolveTemplatePath(dir)
+	if err != nil {
+		http.Error(w, "Invalid path", http.StatusBadRequest)
+		return
+	}
+
+	info, err := os.Stat(fullPath)
+	if err != nil || !info.IsDir() {
+		http.Error(w, "Template directory not found", http.StatusNotFound)
+		return
+	}
+
+	files, err := readTemplateDirFiles(fullPath)
+	if err != nil {
+		http.Error(w, "Failed to read template files", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(templateDirResponse{Files: files})
+}
+
+func readTemplateDirFiles(dir string) ([]templateFile, error) {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+
+	var readme *templateFile
+	var goFiles []templateFile
+
+	for _, entry := range entries {
+		if entry.IsDir() {
+			continue
+		}
+		name := entry.Name()
+		path := filepath.Join(dir, name)
+
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+
+		file := templateFile{Name: name, Content: string(content)}
+
+		switch {
+		case strings.EqualFold(name, "README.md"):
+			readme = &file
+		case strings.HasSuffix(name, ".go"):
+			goFiles = append(goFiles, file)
+		}
+	}
+
+	sort.Slice(goFiles, func(i, j int) bool {
+		return goFiles[i].Name < goFiles[j].Name
+	})
+
+	var result []templateFile
+	if readme != nil {
+		result = append(result, *readme)
+	}
+	result = append(result, goFiles...)
+	return result, nil
+}
+
+// resolveTemplatePath validates that subpath is a relative path with no ".."
+// components and that it stays within the templates directory. It returns the
+// absolute filesystem path for the validated subpath.
+func resolveTemplatePath(subpath string) (string, error) {
+	if subpath == "" {
+		return "", fmt.Errorf("missing path")
+	}
+	if filepath.IsAbs(subpath) {
+		return "", fmt.Errorf("invalid path")
+	}
+
+	// Reject any ".." component explicitly.
+	for _, part := range strings.Split(filepath.ToSlash(subpath), "/") {
+		if part == ".." {
+			return "", fmt.Errorf("invalid path")
+		}
+	}
+
+	basePath, err := filepath.Abs("templates")
+	if err != nil {
+		return "", err
+	}
+
+	fullPath := filepath.Join(basePath, subpath)
+
+	// Defense in depth: ensure the resolved path is strictly inside templates.
+	rel, err := filepath.Rel(basePath, fullPath)
+	if err != nil || strings.HasPrefix(rel, "..") || rel == "." {
+		return "", fmt.Errorf("invalid path")
+	}
+
+	return fullPath, nil
 }

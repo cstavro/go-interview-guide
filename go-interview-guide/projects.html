@@ -40,19 +40,19 @@
       <div class="question-body">
         <p>A small HTTP client with retry logic is leaking goroutines. The client uses goroutines for concurrent requests, but when the context is cancelled, the goroutine blocks forever trying to send on a channel. The tests pass, but the benchmark shows a growing goroutine count.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q01-debug-http-retry/main.go">
+        <div class="code-block-wrapper" data-template="projects/q01-debug-http-retry">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q01-debug-http-retry/main.go" data-problem="q1" data-section="projects">
+            <button class="generate-btn" data-template="projects/q01-debug-http-retry" data-problem="q1" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -104,19 +104,19 @@
       <div class="question-body">
         <p>A log parser processes a large stream of text lines. The implementation is correct but allocates excessively. Your task is to run the benchmark, use <code>go test -bench -memprofile</code> to understand the hot path, and optimize it.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q02-profile-parser/main.go">
+        <div class="code-block-wrapper" data-template="projects/q02-profile-parser">
           <div class="code-header">
             <span class="code-label">Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q02-profile-parser/main.go" data-problem="q2" data-section="projects">
+            <button class="generate-btn" data-template="projects/q02-profile-parser" data-problem="q2" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q2"></div>
@@ -162,19 +162,19 @@
       <div class="question-body">
         <p>This HTTP server has middleware, but the panic recovery middleware is applied in the wrong order. When a handler panics, the recovery middleware catches it but the logging middleware never sees the request — so panics are invisible in logs. Fix the order, then add a <code>TimingMiddleware</code>.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q03-fix-middleware/main.go">
+        <div class="code-block-wrapper" data-template="projects/q03-fix-middleware">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q03-fix-middleware/main.go" data-problem="q3" data-section="projects">
+            <button class="generate-btn" data-template="projects/q03-fix-middleware" data-problem="q3" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q3"></div>
@@ -219,19 +219,19 @@
       <div class="question-body">
         <p>The <code>Counter</code> implementation is correct, but the test is flaky. It uses <code>time.Sleep</code> to wait for goroutines to finish. Fix the test without changing the implementation. Make it robust and fast.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q04-fix-flaky-test/main_test.go">
+        <div class="code-block-wrapper" data-template="projects/q04-fix-flaky-test">
           <div class="code-header">
             <span class="code-label">Flaky Test</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q04-fix-flaky-test/main_test.go" data-problem="q4" data-section="projects">
+            <button class="generate-btn" data-template="projects/q04-fix-flaky-test" data-problem="q4" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -282,19 +282,19 @@
       <div class="question-body">
         <p>This simple in-memory TTL cache is not safe for concurrent use. Fix the race condition, then add a <code>Stats()</code> method that returns hit and miss counts. Run <code>go test -race</code> to confirm your fix.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q05-extend-cache/main.go">
+        <div class="code-block-wrapper" data-template="projects/q05-extend-cache">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q05-extend-cache/main.go" data-problem="q5" data-section="projects">
+            <button class="generate-btn" data-template="projects/q05-extend-cache" data-problem="q5" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q5"></div>
@@ -339,19 +339,19 @@
       <div class="question-body">
         <p>This batch processor accumulates items and flushes them periodically. It has a bug: when <code>Stop()</code> is called, any remaining items are lost because the goroutine exits immediately without flushing. Fix the bug and add a <code>Flush()</code> method.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q06-extend-batcher/main.go">
+        <div class="code-block-wrapper" data-template="projects/q06-extend-batcher">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q06-extend-batcher/main.go" data-problem="q6" data-section="projects">
+            <button class="generate-btn" data-template="projects/q06-extend-batcher" data-problem="q6" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q6"></div>
@@ -396,19 +396,19 @@
       <div class="question-body">
         <p>This REST API handler uses cursor-based pagination. The cursor encodes a timestamp and an ID. The bug is subtle: <code>json.Marshal</code> for an <code>int64</code> timestamp is parsed as <code>float64</code> by default, which loses precision for large values (anything above 2^53). This causes pagination to return wrong results or loop forever.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q07-debug-cursor/main.go">
+        <div class="code-block-wrapper" data-template="projects/q07-debug-cursor">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q07-debug-cursor/main.go" data-problem="q7" data-section="projects">
+            <button class="generate-btn" data-template="projects/q07-debug-cursor" data-problem="q7" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q7"></div>
@@ -454,19 +454,19 @@
       <div class="question-body">
         <p>This service loads configuration but has no validation. Invalid configs cause runtime panics or obscure errors. The <code>String()</code> method is also missing, making it easy to accidentally log secrets.</p>
 
-        <div class="code-block-wrapper" data-template="projects/q08-extend-config/main.go">
+        <div class="code-block-wrapper" data-template="projects/q08-extend-config">
           <div class="code-header">
             <span class="code-label">Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="projects/q08-extend-config/main.go" data-problem="q8" data-section="projects">
+            <button class="generate-btn" data-template="projects/q08-extend-config" data-problem="q8" data-section="projects">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q8"></div>

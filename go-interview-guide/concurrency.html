@@ -40,19 +40,19 @@
       <div class="question-body">
         <p>Write a <code>TokenBucket</code> that allows bursts up to a maximum capacity but refills at a fixed rate. Provide <code>Allow()</code> and <code>AllowN(n int)</code> methods. Must be safe for concurrent use. Include a test that demonstrates a burst followed by throttling.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q01-token-bucket/ratelimit.go">
+        <div class="code-block-wrapper" data-template="concurrency/q01-token-bucket">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q01-token-bucket/ratelimit.go" data-problem="q1" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q01-token-bucket" data-problem="q1" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="test-box">
@@ -106,19 +106,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>Build a worker pool that processes jobs from a channel. It must support <code>Start</code>, <code>Submit</code>, and <code>Stop</code> (graceful). On <code>Stop</code>, it should finish all in-flight jobs but reject new submissions. Use a <code>context.Context</code> for cancellation.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q02-worker-pool/workerpool.go">
+        <div class="code-block-wrapper" data-template="concurrency/q02-worker-pool">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q02-worker-pool/workerpool.go" data-problem="q2" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q02-worker-pool" data-problem="q2" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q2"></div>
@@ -164,19 +164,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>This simple cache has a data race. Run it with <code>go run -race</code> to confirm. Fix it, then optimize for read-heavy workloads without over-complicating the code.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q03-race-cache/main.go">
+        <div class="code-block-wrapper" data-template="concurrency/q03-race-cache">
           <div class="code-header">
             <span class="code-label">Buggy Code</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q03-race-cache/main.go" data-problem="q3" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q03-race-cache" data-problem="q3" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q3"></div>
@@ -222,19 +222,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>You need to call three services (A, B, C) concurrently. The overall operation must complete within 500ms. If any service fails or times out, return an error immediately. Do not leak goroutines. Include the code to call the services and the orchestration logic.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q04-timeout-pattern/main.go">
+        <div class="code-block-wrapper" data-template="concurrency/q04-timeout-pattern">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q04-timeout-pattern/main.go" data-problem="q4" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q04-timeout-pattern" data-problem="q4" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q4"></div>
@@ -280,19 +280,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>Given a channel of input jobs, distribute them to N workers, collect results, and return a single channel. Ensure proper shutdown when input is exhausted. The output order does not need to match input order.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q05-fan-out-fan-in/main.go">
+        <div class="code-block-wrapper" data-template="concurrency/q05-fan-out-fan-in">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q05-fan-out-fan-in/main.go" data-problem="q5" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q05-fan-out-fan-in" data-problem="q5" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q5"></div>
@@ -337,19 +337,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>A semaphore limits the number of concurrent operations. Implement one using only channels (no <code>sync</code> package). Provide <code>Acquire</code> and <code>Release</code> methods. Include a test that proves it limits concurrency to N.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q06-semaphore/semaphore.go">
+        <div class="code-block-wrapper" data-template="concurrency/q06-semaphore">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q06-semaphore/semaphore.go" data-problem="q6" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q06-semaphore" data-problem="q6" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q6"></div>
@@ -394,19 +394,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>This program is a classic concurrency puzzle. Predict the output before running it, then explain why. The answer should reference the Go memory model.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q07-memory-model/main.go">
+        <div class="code-block-wrapper" data-template="concurrency/q07-memory-model">
           <div class="code-header">
             <span class="code-label">Puzzle</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q07-memory-model/main.go" data-problem="q7" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q07-memory-model" data-problem="q7" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q7"></div>
@@ -452,19 +452,19 @@ fmt.Println(bucket.Allow())   // true (refilled)</pre>
       <div class="question-body">
         <p>Build a pub/sub system where subscribers can subscribe to topics with wildcards (e.g., <code>orders.*</code> matches <code>orders.created</code> and <code>orders.updated</code>). Support concurrent publishers and subscribers. Subscribers receive messages via a channel. Ensure slow subscribers don't block fast publishers.</p>
 
-        <div class="code-block-wrapper" data-template="concurrency/q08-pub-sub/pubsub.go">
+        <div class="code-block-wrapper" data-template="concurrency/q08-pub-sub">
           <div class="code-header">
             <span class="code-label">Boilerplate</span>
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
               Copy
             </button>
-            <button class="generate-btn" data-template="concurrency/q08-pub-sub/pubsub.go" data-problem="q8" data-section="concurrency">
+            <button class="generate-btn" data-template="concurrency/q08-pub-sub" data-problem="q8" data-section="concurrency">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
               Generate
             </button>
           </div>
-          <pre><code class="template-content">Loading...</code></pre>
+          <div class="template-content">Loading...</div>
         </div>
 
         <div class="workspace-status" id="ws-q8"></div>
