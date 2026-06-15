@@ -1,6 +1,6 @@
 # Go Interview Guide
 
-A hands-on interview preparation guide for senior and staff-level Go engineering positions. Features 32 practical questions with hints, follow-ups, and workspace generation.
+A hands-on interview preparation guide for senior and staff-level Go engineering positions. Features 52 practical questions with hints, follow-ups, and workspace generation.
 
 ## Quick Start
 
@@ -38,15 +38,19 @@ Then open http://localhost:8080 in your browser.
 │   ├── index.html
 │   ├── go-fundamentals.html
 │   ├── concurrency.html
+│   ├── data-structures.html
 │   ├── algorithms.html
 │   ├── systems-design.html
+│   ├── projects.html
 │   ├── style.css
 │   └── script.js
-├── templates/                       # 32 problem boilerplate directories
+├── templates/                       # 52 problem boilerplate directories
 │   ├── fundamentals/
 │   ├── concurrency/
+│   ├── data-structures/
 │   ├── algorithms/
-│   └── systems-design/
+│   ├── systems-design/
+│   └── projects/
 └── workspaces/                      # Generated on demand (see below)
 ```
 
@@ -83,7 +87,7 @@ If the volume were not mounted, every time you stopped the container, all genera
 
 ## Features
 
-- **32 questions** across 4 categories: Go Fundamentals, Concurrency, Algorithms, Systems Design
+- **52 questions** across 6 categories: Go Fundamentals, Concurrency, Data Structures, Algorithms, Systems Design, Projects
 - **Interactive hints** that reveal progressively
 - **Follow-up questions** that simulate interviewer depth
 - **Code boilerplate** loaded dynamically from templates
@@ -104,8 +108,20 @@ If the volume were not mounted, every time you stopped the container, all genera
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/` | GET | Static file server (HTML, CSS, JS) |
-| `/api/template` | GET | Load a template file by path |
-| `/api/generate` | POST | Generate a workspace from a template |
+| `/api/template`    | GET  | Load a template file by path            |
+| `/api/generate`    | POST | Generate a workspace from a template    |
+| `/api/workspaces`  | GET  | List existing generated workspace dirs  |
+
+## Templates
+
+Each problem lives under `templates/<category>/qNN-short-name/` as a **standalone Go module** with its own `go.mod`. Most templates contain:
+
+- `README.md` — problem statement, hints, follow-ups, and doc links
+- `main.go` — starter code with TODO stubs
+- `main_test.go` — behavioral tests
+- `AGENTS.md` — interviewer-agent instructions used when reviewing a candidate's solution
+
+Systems-design and some project-style questions may have only `go.mod` + `README.md` + `AGENTS.md` if they are discussion or debugging exercises rather than coding problems.
 
 ## Development
 
@@ -126,6 +142,10 @@ To remove the container and the volume (deletes all generated workspaces):
 ```bash
 docker-compose down -v
 ```
+
+## Contributing / Adding Questions
+
+See `AGENTS.md` for the conventions used when adding new question templates, including how to write the per-question `AGENTS.md` and the test suite.
 
 ## License
 
