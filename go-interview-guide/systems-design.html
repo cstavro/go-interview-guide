@@ -40,6 +40,21 @@
       <div class="question-body">
         <p>Design a service like bit.ly that takes a long URL and returns a short URL. It must redirect short URLs to the original. Consider: database schema, hashing strategy, collision handling, rate limiting, analytics, and cache strategy.</p>
 
+        <div class="code-block-wrapper" data-template="systems-design/q01-url-shortener">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q01-url-shortener" data-problem="q1" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <div class="template-content">Loading...</div>
+        </div>
+
         <div class="workspace-status" id="ws-q1"></div>
         <div class="toggle-controls">
           <button class="toggle-btn" data-target="q1-hint">Hint</button>
@@ -83,6 +98,21 @@
       <div class="question-body">
         <p>Your service runs across 10 nodes. You need to enforce a global rate limit: 1000 requests per minute per user across all nodes. Design the system. Consider: synchronization strategy, consistency model, failure modes, and performance.</p>
 
+        <div class="code-block-wrapper" data-template="systems-design/q02-distributed-rate-limiter">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q02-distributed-rate-limiter" data-problem="q2" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <div class="template-content">Loading...</div>
+        </div>
+
         <div class="workspace-status" id="ws-q2"></div>
         <div class="toggle-controls">
           <button class="toggle-btn" data-target="q2-hint">Hint</button>
@@ -125,6 +155,21 @@
       </div>
       <div class="question-body">
         <p>Build a job queue system where each job must be processed exactly once. Jobs can fail and be retried. Discuss: idempotency, deduplication, at-least-once delivery, and the impossibility of exactly-once in distributed systems. Provide a design that achieves "effectively exactly-once" in practice.</p>
+
+        <div class="code-block-wrapper" data-template="systems-design/q03-job-queue">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q03-job-queue" data-problem="q3" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <div class="template-content">Loading...</div>
+        </div>
 
         <div class="workspace-status" id="ws-q3"></div>
         <div class="toggle-controls">
@@ -170,6 +215,21 @@
       <div class="question-body">
         <p>Design a system that pushes notifications to millions of users in real-time. Notifications can be triggered by events (e.g., a message, a price alert). Support: WebSocket, push notifications (APNs/FCM), and email. Users can set preferences per channel. Discuss fan-out, delivery guarantees, and backpressure.</p>
 
+        <div class="code-block-wrapper" data-template="systems-design/q04-notification-system">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q04-notification-system" data-problem="q4" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <div class="template-content">Loading...</div>
+        </div>
+
         <div class="workspace-status" id="ws-q4"></div>
         <div class="toggle-controls">
           <button class="toggle-btn" data-target="q4-hint">Hint</button>
@@ -213,6 +273,21 @@
       </div>
       <div class="question-body">
         <p>Your API has 1000+ clients. You need to introduce a breaking change (e.g., changing how pagination works). Design a versioning strategy that minimizes client disruption. Discuss: URL versioning vs. header versioning, backward compatibility, deprecation lifecycle, and how to enforce sunset deadlines.</p>
+
+        <div class="code-block-wrapper" data-template="systems-design/q05-api-versioning">
+          <div class="code-header">
+            <span class="code-label">Boilerplate</span>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/></svg>
+              Copy
+            </button>
+            <button class="generate-btn" data-template="systems-design/q05-api-versioning" data-problem="q5" data-section="systems-design">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.612 10.867c.763.813 2.014 1.144 2.984.816.23-.086.48-.126.73-.126.67 0 1.34.24 1.86.69.12.1.24.22.36.35.72.87 1.88 1.22 2.92.84.28-.1.56-.26.82-.46.72-.57 1.68-.78 2.58-.54.62.16 1.2.52 1.62 1.03a6.96 6.96 0 0 0 1.62-5.05c0-2.12-.94-4.02-2.42-5.29a6.96 6.96 0 0 0-3.71-1.56c-.42-.04-.84-.06-1.26-.06-2.48 0-4.8.84-6.64 2.26-.28.22-.54.46-.8.72-.46.46-.88.98-1.24 1.54-.46.72-.8 1.52-1.02 2.36-.1.42-.16.86-.16 1.3 0 1.12.3 2.18.82 3.1z"/></svg>
+              Generate
+            </button>
+          </div>
+          <div class="template-content">Loading...</div>
+        </div>
 
         <div class="workspace-status" id="ws-q5"></div>
         <div class="toggle-controls">
